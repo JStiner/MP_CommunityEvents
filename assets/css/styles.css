@@ -748,3 +748,146 @@ h3 {
 .month-grid .calendar-day-card {
   overflow: hidden;
 }
+
+
+body.soft-light {
+  background:
+    radial-gradient(circle at top left, rgba(232, 242, 255, 0.95), transparent 35%),
+    radial-gradient(circle at top right, rgba(255, 239, 245, 0.9), transparent 32%),
+    linear-gradient(180deg, #f6f9ff 0%, #edf3fb 100%);
+}
+
+.wide-shell {
+  max-width: 1320px;
+}
+
+.filter-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-chip {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.88);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.filter-chip.active {
+  background: linear-gradient(180deg, #e5efff 0%, #d4e4ff 100%);
+  color: #314f88;
+}
+
+.proper-calendar-shell {
+  background: rgba(255,255,255,0.62);
+  border: 1px solid rgba(145, 164, 190, 0.22);
+  border-radius: 28px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+.calendar-weekdays {
+  margin-bottom: 8px;
+}
+
+.month-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  background: rgba(210, 223, 244, 0.6);
+  gap: 1px;
+  border: 1px solid rgba(145, 164, 190, 0.2);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.calendar-day-card.proper-grid {
+  background: rgba(255,255,255,0.96);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 150px;
+  padding: 10px;
+}
+
+.calendar-day-card.proper-grid.muted {
+  background: rgba(245, 248, 252, 0.96);
+}
+
+.calendar-day-card.proper-grid.today {
+  background: linear-gradient(180deg, #ffffff 0%, #edf4ff 100%);
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(112, 146, 226, 0.55);
+}
+
+.calendar-day-card.proper-grid .calendar-day-header {
+  justify-content: flex-start;
+  margin-bottom: 4px;
+}
+
+.calendar-day-card.proper-grid .calendar-day-number {
+  width: 30px;
+  height: 30px;
+  font-size: 0.95rem;
+}
+
+.calendar-day-card.proper-grid .calendar-day-events {
+  gap: 6px;
+}
+
+.calendar-day-card.proper-grid .calendar-empty {
+  min-height: 14px;
+}
+
+.more-events-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 700;
+  padding: 2px 4px;
+}
+
+.calendar-event-chip.bucket-community {
+  background: linear-gradient(180deg, #eef8ff 0%, #ddf0ff 100%);
+}
+
+.calendar-event-chip.bucket-school {
+  background: linear-gradient(180deg, #fff3ea 0%, #ffe7d3 100%);
+}
+
+.calendar-event-chip.bucket-town-services {
+  background: linear-gradient(180deg, #eff8ef 0%, #dff0df 100%);
+}
+
+.calendar-event-chip.bucket-fall-fest {
+  background: linear-gradient(180deg, #fff5eb 0%, #ffe6ca 100%);
+}
+
+.calendar-event-chip.bucket-2nd-fridays {
+  background: linear-gradient(180deg, #f4efff 0%, #e8defd 100%);
+}
+
+.calendar-event-chip.bucket-christmas {
+  background: linear-gradient(180deg, #eef9f0 0%, #dff2e2 100%);
+}
+
+@media (max-width: 700px) {
+  .proper-calendar-shell {
+    overflow-x: auto;
+  }
+
+  .calendar-weekdays.month-only,
+  .month-grid {
+    min-width: 780px;
+  }
+
+  .month-grid {
+    grid-template-columns: repeat(7, minmax(108px, 1fr));
+  }
+
+  .calendar-day-card.proper-grid {
+    min-height: 140px;
+  }
+}
