@@ -7,15 +7,22 @@ Static GitHub Pages starter for a community events app.
 - Separate event pages
 - Separate JSON data files per event
 - Shared styling and reusable JS
+- Christmas on Vinegar Hill flyer section rendered from JSON data
+- Reference source files stored in `assets/docs/`
 
 ## Event Data Files
 - `data/fall-fest-2026.json`
 - `data/second-fridays-2026.json`
 - `data/christmas-on-vinegar-hill-2026.json`
 
-## Notes
-The home page calendar reads schedule items from all event JSON files and places them on their matching dates.
-Each schedule item links into the related event page and opens that item by hash.
+## Christmas on Vinegar Hill structure
+The Christmas page now supports:
+- grouped locations
+- multi-vendor location modals
+- vendor lists per host location
+- a flyer tab rendered from data
+- downloadable source reference files
 
-## Next Steps
-Replace dummy dates, vendors, map positions, and descriptions with live event data.
+## Reference Files
+- `assets/docs/christmas-on-vinegar-hill-2025-pamphlet.docx`
+- `assets/docs/christmas-on-vinegar-hill-vendor-reference.xlsx`

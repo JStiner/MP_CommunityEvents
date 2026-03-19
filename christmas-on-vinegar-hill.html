@@ -10,7 +10,7 @@
   <main class="phone-shell">
     <header class="top-bar">
       <a class="back-link" href="index.html">← Events</a>
-      <span class="top-badge">Demo Data</span>
+      <span class="top-badge">Demo + Structure</span>
     </header>
 
     <section class="hero-card compact">
@@ -21,6 +21,7 @@
         <span id="event-dates" class="meta-chip">Dates</span>
         <span id="event-location" class="meta-chip">Location</span>
       </div>
+      <div id="resource-links" class="resource-links"></div>
     </section>
 
     <nav class="tab-row" aria-label="Event Views">
@@ -28,6 +29,7 @@
       <button class="tab-button" data-tab="map">Map</button>
       <button class="tab-button" data-tab="vendors">Vendors</button>
       <button class="tab-button" data-tab="locations">Locations</button>
+      <button class="tab-button" data-tab="flyer">Flyer</button>
     </nav>
 
     <section id="schedule" class="tab-panel active">
@@ -52,6 +54,10 @@
 
     <section id="locations" class="tab-panel">
       <div id="location-list" class="stack-list"></div>
+    </section>
+
+    <section id="flyer" class="tab-panel">
+      <div id="flyer-panel" class="flyer-shell"></div>
     </section>
   </main>
 
