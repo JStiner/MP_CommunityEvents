@@ -2,13 +2,13 @@
   "eventName": "Christmas on Vinegar Hill",
   "eventType": "Holiday Walk",
   "summary": "One-day holiday event organized by location, with shopping, food, photo stops, and community destinations across Mt. Pulaski and nearby partner locations.",
-  "dateLabel": "Saturday, November 22, 2025",
+  "dateLabel": "Saturday, November 21, 2026",
   "areaLabel": "Mt. Pulaski, Chestnut, Elkhart, and Latham",
   "days": [
     {
       "id": "holiday",
       "label": "Saturday",
-      "date": "2025-11-22"
+      "date": "2026-11-21"
     }
   ],
   "tabs": [
@@ -320,7 +320,8 @@
       "locationId": "courthouse",
       "category": "Event Window",
       "description": "Core event hours for most Mt. Pulaski locations.",
-      "vendorIds": []
+      "vendorIds": [],
+      "date": "2026-11-21"
     },
     {
       "id": "cvh-food-1",
@@ -333,7 +334,8 @@
       "description": "Fresh hot pork chop sandwiches.",
       "vendorIds": [
         "boyscouts-food"
-      ]
+      ],
+      "date": "2026-11-21"
     },
     {
       "id": "cvh-zion",
@@ -344,7 +346,8 @@
       "locationId": "zion",
       "category": "Food",
       "description": "Soup, sandwiches, and vendors.",
-      "vendorIds": []
+      "vendorIds": [],
+      "date": "2026-11-21"
     },
     {
       "id": "cvh-market",
@@ -355,7 +358,8 @@
       "locationId": "market",
       "category": "Food & Coffee",
       "description": "Extended hours for coffee, treats, and food.",
-      "vendorIds": []
+      "vendorIds": [],
+      "date": "2026-11-21"
     },
     {
       "id": "cvh-elkhart",
@@ -366,7 +370,8 @@
       "locationId": "elkhartstore",
       "category": "Satellite",
       "description": "Elkhart Station General Store and nearby food stop.",
-      "vendorIds": []
+      "vendorIds": [],
+      "date": "2026-11-21"
     },
     {
       "id": "cvh-latham",
@@ -377,7 +382,8 @@
       "locationId": "bbs",
       "category": "Satellite",
       "description": "Latham partner venue open with food and vendors.",
-      "vendorIds": []
+      "vendorIds": [],
+      "date": "2026-11-21"
     },
     {
       "id": "cvh-photo",
@@ -388,7 +394,8 @@
       "locationId": "gazebo",
       "category": "Photo Op",
       "description": "Holiday-decorated gazebo for family photos.",
-      "vendorIds": []
+      "vendorIds": [],
+      "date": "2026-11-21"
     }
   ],
   "vendors": [
@@ -503,7 +510,7 @@
   ],
   "flyer": {
     "title": "Christmas on Vinegar Hill",
-    "subtitle": "36th Annual \u2022 Saturday, November 22, 2025",
+    "subtitle": "36th Annual \u2022 Saturday, November 21, 2026",
     "iconLegend": [
       {
         "label": "MV",
@@ -702,8 +709,8 @@
   },
   "resources": [
     {
-      "label": "Original 2025 Pamphlet (DOCX)",
-      "href": "assets/docs/christmas-on-vinegar-hill-2025-pamphlet.docx"
+      "label": "Original 2026 Pamphlet (DOCX)",
+      "href": "assets/docs/christmas-on-vinegar-hill-2026-pamphlet.docx"
     },
     {
       "label": "Vendor Reference Workbook (XLSX)",

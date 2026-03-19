@@ -1,13 +1,13 @@
 {
-  "eventName": "Mt. Pulaski Fall Festival 2025",
+  "eventName": "Mt. Pulaski Fall Festival 2026",
   "eventType": "Community Festival",
-  "summary": "2025 Mt. Pulaski Fall Festival schedule loaded from last year's flyer, organized across downtown locations, food areas, and activity zones.",
-  "dateLabel": "September 10\u201314, 2025",
+  "summary": "2026 Mt. Pulaski Fall Festival schedule loaded from last year's flyer, organized across downtown locations, food areas, and activity zones.",
+  "dateLabel": "September 9\u201313, 2026",
   "areaLabel": "Downtown Mt. Pulaski",
   "theme": {
-    "year": 2025,
+    "year": 2026,
     "title": "Off to the Races",
-    "displayText": "2025 Mt. Pulaski Fall Festival \u2014 Off to the Races"
+    "displayText": "2026 Mt. Pulaski Fall Festival \u2014 Off to the Races"
   },
   "featuredBranding": {
     "title": "50 Years on the Hill",
@@ -17,35 +17,35 @@
     {
       "id": "wed",
       "label": "Wednesday",
-      "date": "2025-09-10"
+      "date": "2026-09-09"
     },
     {
       "id": "thu",
       "label": "Thursday",
-      "date": "2025-09-11"
+      "date": "2026-09-10"
     },
     {
       "id": "fri",
       "label": "Friday",
-      "date": "2025-09-12"
+      "date": "2026-09-11"
     },
     {
       "id": "sat",
       "label": "Saturday",
-      "date": "2025-09-13"
+      "date": "2026-09-12"
     },
     {
       "id": "sun",
       "label": "Sunday",
-      "date": "2025-09-14"
+      "date": "2026-09-13"
     }
   ],
   "dates": [
-    "2025-09-10",
-    "2025-09-11",
-    "2025-09-12",
-    "2025-09-13",
-    "2025-09-14"
+    "2026-09-09",
+    "2026-09-10",
+    "2026-09-11",
+    "2026-09-12",
+    "2026-09-13"
   ],
   "locations": [
     {
@@ -229,7 +229,7 @@
     {
       "id": "ff-001",
       "dayId": "wed",
-      "date": "2025-09-10",
+      "date": "2026-09-09",
       "startTime": "5:00 PM",
       "endTime": "8:00 PM",
       "title": "Paint the Square Event",
@@ -241,7 +241,7 @@
     {
       "id": "ff-002",
       "dayId": "thu",
-      "date": "2025-09-11",
+      "date": "2026-09-10",
       "startTime": "5:00 PM",
       "endTime": "10:00 PM",
       "title": "Hilltop Club Beer Tent",
@@ -253,7 +253,7 @@
     {
       "id": "ff-003",
       "dayId": "thu",
-      "date": "2025-09-11",
+      "date": "2026-09-10",
       "startTime": "6:00 PM",
       "endTime": "7:00 PM",
       "title": "Class of 1965 Class Reunion",
@@ -265,7 +265,7 @@
     {
       "id": "ff-004",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "8:00 AM",
       "endTime": "9:00 PM",
       "title": "Townwide Garage Sales",
@@ -277,7 +277,7 @@
     {
       "id": "ff-005",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "9:00 AM",
       "endTime": "5:00 PM",
       "title": "Courthouse Open",
@@ -289,7 +289,7 @@
     {
       "id": "ff-006",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "12:00 PM",
       "endTime": "7:00 PM",
       "title": "Museum Open \u2013 Vintage Clothing & Siltennial Exhibit",
@@ -301,7 +301,7 @@
     {
       "id": "ff-007",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:00 PM",
       "endTime": "8:00 PM",
       "title": "Vendors Open",
@@ -313,7 +313,7 @@
     {
       "id": "ff-008",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:00 PM",
       "endTime": "8:00 PM",
       "title": "Balloon Artist / Face Painting with Holly From the Farm",
@@ -325,7 +325,7 @@
     {
       "id": "ff-009",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:00 PM",
       "endTime": "8:00 PM",
       "title": "Bounce Houses / Big Trikes",
@@ -337,7 +337,7 @@
     {
       "id": "ff-010",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:00 PM",
       "endTime": "8:00 PM",
       "title": "Dunk Tank",
@@ -349,7 +349,7 @@
     {
       "id": "ff-011",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:00 PM",
       "endTime": "8:00 PM",
       "title": "Hilltop Drop Soap Box Rally Practice",
@@ -361,7 +361,7 @@
     {
       "id": "ff-012",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:00 PM",
       "endTime": "8:00 PM",
       "title": "M&A Stables Petting Zoo / Pony Rides",
@@ -373,7 +373,7 @@
     {
       "id": "ff-013",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:00 PM",
       "endTime": "8:00 PM",
       "title": "Kids\u2019 Activities / Moms\u2019 Rest Spot",
@@ -385,7 +385,7 @@
     {
       "id": "ff-014",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:00 PM",
       "endTime": "6:00 PM",
       "title": "FarmFed Coop Meal",
@@ -397,7 +397,7 @@
     {
       "id": "ff-015",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:00 PM",
       "endTime": "11:59 PM",
       "title": "Hilltop Club Beer Tent",
@@ -409,7 +409,7 @@
     {
       "id": "ff-016",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:15 PM",
       "endTime": "6:15 PM",
       "title": "Kiddie Tractor Pull",
@@ -421,7 +421,7 @@
     {
       "id": "ff-017",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "5:30 PM",
       "endTime": "6:00 PM",
       "title": "Opening Ceremony",
@@ -433,7 +433,7 @@
     {
       "id": "ff-018",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "6:00 PM",
       "endTime": "8:00 PM",
       "title": "Upper Limits Rock Climbing Wall",
@@ -445,7 +445,7 @@
     {
       "id": "ff-019",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "6:00 PM",
       "endTime": "8:00 PM",
       "title": "Cake Walk",
@@ -457,7 +457,7 @@
     {
       "id": "ff-020",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "6:00 PM",
       "endTime": "7:00 PM",
       "title": "Pageant",
@@ -469,7 +469,7 @@
     {
       "id": "ff-021",
       "dayId": "fri",
-      "date": "2025-09-12",
+      "date": "2026-09-11",
       "startTime": "7:00 PM",
       "endTime": "11:00 PM",
       "title": "Hillbilly Highrise",
@@ -481,7 +481,7 @@
     {
       "id": "ff-022",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "8:00 AM",
       "endTime": "9:00 PM",
       "title": "Townwide Garage Sales",
@@ -493,7 +493,7 @@
     {
       "id": "ff-023",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "8:00 AM",
       "endTime": "2:00 PM",
       "title": "Anything With Wheels Show",
@@ -505,7 +505,7 @@
     {
       "id": "ff-024",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "8:00 AM",
       "endTime": "9:00 AM",
       "title": "Hilltop Drop Soap Box Rally",
@@ -517,7 +517,7 @@
     {
       "id": "ff-025",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "9:00 AM",
       "endTime": "10:00 AM",
       "title": "5th Annual Kids\u2019 Color Run",
@@ -529,7 +529,7 @@
     {
       "id": "ff-026",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "9:00 AM",
       "endTime": "10:00 AM",
       "title": "Charlie Bingo",
@@ -541,7 +541,7 @@
     {
       "id": "ff-027",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "9:00 AM",
       "endTime": "5:00 PM",
       "title": "Courthouse Open",
@@ -553,7 +553,7 @@
     {
       "id": "ff-028",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "9:00 AM",
       "endTime": "9:00 PM",
       "title": "Kids\u2019 Activities / Moms\u2019 Rest Spot",
@@ -565,7 +565,7 @@
     {
       "id": "ff-029",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "10:00 AM",
       "endTime": "10:30 AM",
       "title": "FREE Imago Dei Pilates Studio",
@@ -577,7 +577,7 @@
     {
       "id": "ff-030",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "10:00 AM",
       "endTime": "8:00 PM",
       "title": "M&A Stables Petting Zoo / Pony Rides",
@@ -589,7 +589,7 @@
     {
       "id": "ff-031",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "10:00 AM",
       "endTime": "2:00 PM",
       "title": "Cake Walk",
@@ -601,7 +601,7 @@
     {
       "id": "ff-032",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "10:00 AM",
       "endTime": "8:00 PM",
       "title": "Upper Limits Rock Climbing Wall",
@@ -613,7 +613,7 @@
     {
       "id": "ff-033",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "10:00 AM",
       "endTime": "8:00 PM",
       "title": "Vendors Open",
@@ -625,7 +625,7 @@
     {
       "id": "ff-034",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "10:00 AM",
       "endTime": "8:00 PM",
       "title": "Bounce Houses / Big Trikes",
@@ -637,7 +637,7 @@
     {
       "id": "ff-035",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "10:00 AM",
       "endTime": "8:00 PM",
       "title": "Balloons by Isaac",
@@ -649,7 +649,7 @@
     {
       "id": "ff-036",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "11:00 AM",
       "endTime": "3:00 PM",
       "title": "Dunk Tank",
@@ -661,7 +661,7 @@
     {
       "id": "ff-037",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "11:00 AM",
       "endTime": "12:00 PM",
       "title": "Bags Tournament",
@@ -673,7 +673,7 @@
     {
       "id": "ff-038",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "12:00 PM",
       "endTime": "1:00 PM",
       "title": "Home Football Game \u2013 Unity Christian v South Fork",
@@ -685,7 +685,7 @@
     {
       "id": "ff-039",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "12:00 PM",
       "endTime": "2:00 PM",
       "title": "Vonderleith FREE Fun Bingo",
@@ -697,7 +697,7 @@
     {
       "id": "ff-040",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "12:00 PM",
       "endTime": "7:00 PM",
       "title": "Museum Open \u2013 Vintage Clothing & Siltennial Exhibit",
@@ -709,7 +709,7 @@
     {
       "id": "ff-041",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "12:00 PM",
       "endTime": "11:59 PM",
       "title": "Hilltop Club Beer Tent",
@@ -721,7 +721,7 @@
     {
       "id": "ff-042",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "1:30 PM",
       "endTime": "3:30 PM",
       "title": "Balloon Artist / Face Painting Zoo Lady",
@@ -733,7 +733,7 @@
     {
       "id": "ff-043",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "2:00 PM",
       "endTime": "3:00 PM",
       "title": "Cooking Contest",
@@ -745,7 +745,7 @@
     {
       "id": "ff-044",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "3:30 PM",
       "endTime": "4:00 PM",
       "title": "Kids! Pick Up Race Flags for the Parade!",
@@ -757,7 +757,7 @@
     {
       "id": "ff-045",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "4:00 PM",
       "endTime": "5:00 PM",
       "title": "Parade",
@@ -769,7 +769,7 @@
     {
       "id": "ff-046",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "4:30 PM",
       "endTime": "5:00 PM",
       "title": "Junto Taekwondo Demo",
@@ -781,7 +781,7 @@
     {
       "id": "ff-047",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "5:00 PM",
       "endTime": "5:30 PM",
       "title": "Mt. Pulaski JH/HS Cheer Demo",
@@ -793,7 +793,7 @@
     {
       "id": "ff-048",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "5:00 PM",
       "endTime": "6:00 PM",
       "title": "Hilltop Club Ribeye Sandwich Meal",
@@ -805,7 +805,7 @@
     {
       "id": "ff-049",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "5:15 PM",
       "endTime": "6:00 PM",
       "title": "BMX Big Air Show",
@@ -817,7 +817,7 @@
     {
       "id": "ff-050",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "5:00 PM",
       "endTime": "7:00 PM",
       "title": "Bubble Bus",
@@ -829,7 +829,7 @@
     {
       "id": "ff-051",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "5:00 PM",
       "endTime": "7:00 PM",
       "title": "Dunk Tank",
@@ -841,7 +841,7 @@
     {
       "id": "ff-052",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "6:00 PM",
       "endTime": "7:00 PM",
       "title": "Community Band Concert",
@@ -853,7 +853,7 @@
     {
       "id": "ff-053",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "6:00 PM",
       "endTime": "8:00 PM",
       "title": "Mobile Gaming Trailer",
@@ -865,7 +865,7 @@
     {
       "id": "ff-054",
       "dayId": "sat",
-      "date": "2025-09-13",
+      "date": "2026-09-12",
       "startTime": "7:00 PM",
       "endTime": "11:00 PM",
       "title": "Brandy Kristin Band",
@@ -877,7 +877,7 @@
     {
       "id": "ff-055",
       "dayId": "sun",
-      "date": "2025-09-14",
+      "date": "2026-09-13",
       "startTime": "9:00 AM",
       "endTime": "10:00 AM",
       "title": "Clean the Square Service Project",
@@ -889,7 +889,7 @@
     {
       "id": "ff-056",
       "dayId": "sun",
-      "date": "2025-09-14",
+      "date": "2026-09-13",
       "startTime": "11:00 AM",
       "endTime": "1:00 PM",
       "title": "Community Church Service & Picnic",
