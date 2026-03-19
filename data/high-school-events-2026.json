@@ -1,0 +1,65 @@
+{
+  "eventName": "High School Events",
+  "eventType": "School",
+  "summary": "General high school events including games, concerts, performances, and school activities.",
+  "dateLabel": "School Year",
+  "areaLabel": "School District",
+  "category": "School",
+  "days": [
+    {
+      "id": "sep",
+      "label": "September",
+      "date": "2026-09-18"
+    },
+    {
+      "id": "nov",
+      "label": "November",
+      "date": "2026-11-07"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "school-football",
+      "dayId": "sep",
+      "date": "2026-09-18",
+      "title": "Varsity Football vs. Lincoln",
+      "startTime": "7:00 PM",
+      "endTime": "9:30 PM",
+      "locationId": "school-field",
+      "category": "School",
+      "description": "Home varsity football game."
+    },
+    {
+      "id": "school-play",
+      "dayId": "nov",
+      "date": "2026-11-07",
+      "title": "Fall Play",
+      "startTime": "6:30 PM",
+      "endTime": "8:30 PM",
+      "locationId": "school-auditorium",
+      "category": "School",
+      "description": "High school theater performance."
+    }
+  ],
+  "locations": [
+    {
+      "id": "school-field",
+      "name": "High School Field",
+      "address": "500 School St",
+      "mapX": 60,
+      "mapY": 32,
+      "description": "Outdoor athletic field.",
+      "pinIcon": "\ud83c\udfc8"
+    },
+    {
+      "id": "school-auditorium",
+      "name": "High School Auditorium",
+      "address": "500 School St",
+      "mapX": 62,
+      "mapY": 38,
+      "description": "Indoor stage and seating.",
+      "pinIcon": "\ud83c\udfad"
+    }
+  ],
+  "vendors": []
+}

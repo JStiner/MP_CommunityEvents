@@ -1,0 +1,65 @@
+{
+  "eventName": "Community Events",
+  "eventType": "Community",
+  "summary": "General town and community events including trunk or treat, public gatherings, and local activities.",
+  "dateLabel": "Year-round",
+  "areaLabel": "Community Wide",
+  "category": "Community",
+  "days": [
+    {
+      "id": "oct",
+      "label": "October",
+      "date": "2026-10-24"
+    },
+    {
+      "id": "jun",
+      "label": "June",
+      "date": "2026-06-13"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "community-trunk",
+      "dayId": "oct",
+      "date": "2026-10-24",
+      "title": "Trunk or Treat",
+      "startTime": "5:00 PM",
+      "endTime": "7:00 PM",
+      "locationId": "community-park",
+      "category": "Community",
+      "description": "Family trunk or treat event with candy, costumes, and decorated vehicles."
+    },
+    {
+      "id": "community-market",
+      "dayId": "jun",
+      "date": "2026-06-13",
+      "title": "Summer Community Market",
+      "startTime": "9:00 AM",
+      "endTime": "1:00 PM",
+      "locationId": "community-square",
+      "category": "Community",
+      "description": "Local makers, fresh goods, and community booths on the square."
+    }
+  ],
+  "locations": [
+    {
+      "id": "community-park",
+      "name": "City Park",
+      "address": "100 Park Ln",
+      "mapX": 40,
+      "mapY": 52,
+      "description": "Open community park.",
+      "pinIcon": "\ud83c\udf83"
+    },
+    {
+      "id": "community-square",
+      "name": "Town Square",
+      "address": "1 Main St",
+      "mapX": 54,
+      "mapY": 45,
+      "description": "Downtown square.",
+      "pinIcon": "\ud83d\udecd\ufe0f"
+    }
+  ],
+  "vendors": []
+}

@@ -1,0 +1,56 @@
+{
+  "eventName": "Town Services",
+  "eventType": "Town Services",
+  "summary": "Town-wide service notices and recurring civic items such as leaf pickup and utility notices.",
+  "dateLabel": "Seasonal",
+  "areaLabel": "Town Wide",
+  "category": "Town Services",
+  "days": [
+    {
+      "id": "nov1",
+      "label": "November",
+      "date": "2026-11-10"
+    },
+    {
+      "id": "apr1",
+      "label": "April",
+      "date": "2026-04-15"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "town-leaf",
+      "dayId": "nov1",
+      "date": "2026-11-10",
+      "title": "Leaf Pickup - Zone 1",
+      "startTime": "7:00 AM",
+      "endTime": "3:00 PM",
+      "locationId": "town-garage",
+      "category": "Town Services",
+      "description": "Curbside leaf pickup for Zone 1 residents."
+    },
+    {
+      "id": "town-clean",
+      "dayId": "apr1",
+      "date": "2026-04-15",
+      "title": "Spring Bulk Pickup",
+      "startTime": "7:00 AM",
+      "endTime": "3:00 PM",
+      "locationId": "town-garage",
+      "category": "Town Services",
+      "description": "Scheduled bulk item pickup for approved curbside materials."
+    }
+  ],
+  "locations": [
+    {
+      "id": "town-garage",
+      "name": "Town Street Department",
+      "address": "200 Service Rd",
+      "mapX": 30,
+      "mapY": 68,
+      "description": "Operations and service staging.",
+      "pinIcon": "\ud83d\ude9b"
+    }
+  ],
+  "vendors": []
+}
