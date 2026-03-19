@@ -927,3 +927,12 @@ body.soft-light {
     white-space: nowrap;
   }
 }
+
+
+.error-state {
+  border: 1px solid rgba(205, 92, 92, 0.35);
+  background: rgba(255, 244, 244, 0.95);
+  color: #8a2d2d;
+  padding: 14px 16px;
+  border-radius: 18px;
+}
