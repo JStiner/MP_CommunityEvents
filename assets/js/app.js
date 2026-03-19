@@ -31,6 +31,16 @@ function formatTimeRange(start, end) {
   return `${start} – ${end}`;
 }
 
+function convertTimeTo24(timeStr) {
+  const match = String(timeStr).trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+  if (!match) return '00:00';
+  let [, h, m, ap] = match;
+  let hour = parseInt(h, 10);
+  if (ap.toUpperCase() === 'PM' && hour !== 12) hour += 12;
+  if (ap.toUpperCase() === 'AM' && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, '0')}:${m}`;
+}
+
 function makeButton(label, onClick, className = '') {
   const button = document.createElement('button');
   button.type = 'button';
@@ -126,7 +136,7 @@ function renderDayFilter(data) {
     const today = new Date();
     const defaultMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
     const fallbackMonth = monthOptions[0]?.id || defaultMonth;
-    state.selectedDate = state.selectedDate || (monthOptions.some(m => m.id === defaultMonth) ? defaultMonth : fallbackMonth);
+    state.selectedDate = state.selectedDate || 'all';
 
     const allChip = document.createElement('button');
     allChip.type = 'button';
@@ -224,6 +234,7 @@ function renderSchedule(data) {
         'Schedule Item',
         item.title,
         `
+          ${item.date ? `<p><strong>Date:</strong> ${new Date(`${item.date}T12:00:00`).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>` : ''}
           <p><strong>Time:</strong> ${formatTimeRange(item.startTime, item.endTime)}</p>
           <p><strong>Location:</strong> ${location?.name || 'TBD'}</p>
           <p><strong>Category:</strong> ${item.category}</p>
