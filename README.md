@@ -1,5 +1,7 @@
 # Community Events Calendar Demo
 
+https://jstiner.github.io/MP_CommunityEvents/
+
 Static GitHub Pages starter for a community events app.
 
 ## Included
