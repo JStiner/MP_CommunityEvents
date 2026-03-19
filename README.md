@@ -1,6 +1,7 @@
-# Community Events Calendar Demo
+## Live Site
+- `https://jstiner.github.io/MP_CommunityEvents/`
 
-https://jstiner.github.io/MP_CommunityEvents/
+# Community Events Calendar Demo
 
 Static GitHub Pages starter for a community events app.
 
@@ -57,3 +58,5 @@ The Christmas page now supports:
 - Added `Event Submissions` sheet to the vendor intake workbook for raw intake and review tracking.
 
 - Updated `data/fall-fest-2026.json` with 2025 Fall Festival schedule content transcribed from the flyer and added theme metadata.
+
+- Demo data dates have been normalized to 2026 across the included event JSON files.
