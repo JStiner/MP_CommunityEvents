@@ -1,0 +1,84 @@
+{
+  "eventName": "2nd Fridays Demo",
+  "eventType": "Monthly Downtown Event",
+  "summary": "One-day sample event using the same layout with smaller schedule, vendor, and location data.",
+  "dateLabel": "May 8, 2026",
+  "areaLabel": "Historic Downtown",
+  "days": [
+    {
+      "id": "day1",
+      "label": "Friday"
+    }
+  ],
+  "locations": [
+    {
+      "id": "plaza",
+      "name": "Downtown Plaza",
+      "address": "10 Plaza Dr",
+      "mapX": 42,
+      "mapY": 45,
+      "description": "Central meetup space for booths and music.",
+      "notes": "Main gathering point.",
+      "directionsText": "Street parking available.",
+      "pinIcon": "\u2728"
+    },
+    {
+      "id": "coffee",
+      "name": "Corner Coffee Patio",
+      "address": "18 Vine St",
+      "mapX": 68,
+      "mapY": 55,
+      "description": "Small acoustic sets and seating.",
+      "notes": "Outdoor seating.",
+      "directionsText": "Walk east from the plaza.",
+      "pinIcon": "\u2615"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "sf1",
+      "dayId": "day1",
+      "title": "Vendor Setup Opens",
+      "startTime": "4:30 PM",
+      "endTime": "5:30 PM",
+      "locationId": "plaza",
+      "category": "Market",
+      "description": "Shops and popup booths begin service.",
+      "vendorIds": [
+        "s1",
+        "s2"
+      ]
+    },
+    {
+      "id": "sf2",
+      "dayId": "day1",
+      "title": "Acoustic Patio Set",
+      "startTime": "6:00 PM",
+      "endTime": "7:30 PM",
+      "locationId": "coffee",
+      "category": "Music",
+      "description": "Relaxed live music on the patio.",
+      "vendorIds": []
+    }
+  ],
+  "vendors": [
+    {
+      "id": "s1",
+      "name": "Maple Street Boutique",
+      "locationId": "plaza",
+      "category": "Retail",
+      "description": "Seasonal gifts and accessories.",
+      "booth": "P-04",
+      "hours": "5:00 PM\u20138:00 PM"
+    },
+    {
+      "id": "s2",
+      "name": "Brick Oven Pizza Slice Bar",
+      "locationId": "plaza",
+      "category": "Food",
+      "description": "Quick slices and drinks.",
+      "booth": "P-07",
+      "hours": "5:00 PM\u20138:00 PM"
+    }
+  ]
+}

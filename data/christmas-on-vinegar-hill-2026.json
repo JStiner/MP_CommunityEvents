@@ -1,0 +1,117 @@
+{
+  "eventName": "Christmas on Vinegar Hill Demo",
+  "eventType": "Holiday Walk",
+  "summary": "Location-first one-day holiday event with shops, stops, vendors, and direction notes.",
+  "dateLabel": "December 5, 2026",
+  "areaLabel": "Vinegar Hill District",
+  "days": [
+    {
+      "id": "holiday",
+      "label": "Saturday"
+    }
+  ],
+  "locations": [
+    {
+      "id": "hall",
+      "name": "Community Hall",
+      "address": "1 Hilltop Ln",
+      "mapX": 25,
+      "mapY": 38,
+      "description": "Welcome desk, maps, cocoa, and music.",
+      "notes": "Suggested starting point.",
+      "directionsText": "Start here for printed maps.",
+      "pinIcon": "\ud83c\udf84"
+    },
+    {
+      "id": "shop",
+      "name": "Old Mill Shop",
+      "address": "15 Market St",
+      "mapX": 58,
+      "mapY": 48,
+      "description": "Gift shop stop with makers inside.",
+      "notes": "Indoor shopping.",
+      "directionsText": "Short walk from Community Hall.",
+      "pinIcon": "\ud83d\udecd\ufe0f"
+    },
+    {
+      "id": "firepit",
+      "name": "Firepit Courtyard",
+      "address": "22 Vinegar Hill Rd",
+      "mapX": 73,
+      "mapY": 70,
+      "description": "S'mores, photos, and holiday seating.",
+      "notes": "Outdoor photo spot.",
+      "directionsText": "Bundle up, mostly outdoor area.",
+      "pinIcon": "\ud83d\udd25"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "cv1",
+      "dayId": "holiday",
+      "title": "Welcome & Cocoa",
+      "startTime": "11:00 AM",
+      "endTime": "2:00 PM",
+      "locationId": "hall",
+      "category": "Welcome",
+      "description": "Map pickup and hot cocoa station.",
+      "vendorIds": [
+        "c1"
+      ]
+    },
+    {
+      "id": "cv2",
+      "dayId": "holiday",
+      "title": "Maker Pop-Up Market",
+      "startTime": "11:00 AM",
+      "endTime": "4:00 PM",
+      "locationId": "shop",
+      "category": "Shopping",
+      "description": "Holiday makers and local gift vendors.",
+      "vendorIds": [
+        "c2",
+        "c3"
+      ]
+    },
+    {
+      "id": "cv3",
+      "dayId": "holiday",
+      "title": "Firepit Photos",
+      "startTime": "5:00 PM",
+      "endTime": "7:00 PM",
+      "locationId": "firepit",
+      "category": "Family",
+      "description": "Family photo stop near holiday lights.",
+      "vendorIds": []
+    }
+  ],
+  "vendors": [
+    {
+      "id": "c1",
+      "name": "Warm Mug Cocoa Cart",
+      "locationId": "hall",
+      "category": "Food & Drink",
+      "description": "Hot cocoa, cider, and cookies.",
+      "booth": "H-01",
+      "hours": "11:00 AM\u20132:00 PM"
+    },
+    {
+      "id": "c2",
+      "name": "Vinegar Hill Candle Co.",
+      "locationId": "shop",
+      "category": "Holiday Gifts",
+      "description": "Small-batch candles and wax melts.",
+      "booth": "M-03",
+      "hours": "11:00 AM\u20134:00 PM"
+    },
+    {
+      "id": "c3",
+      "name": "Evergreen Crafts",
+      "locationId": "shop",
+      "category": "Handmade",
+      "description": "Holiday ornaments and wreath d\u00e9cor.",
+      "booth": "M-06",
+      "hours": "11:00 AM\u20134:00 PM"
+    }
+  ]
+}

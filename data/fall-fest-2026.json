@@ -1,0 +1,132 @@
+{
+  "eventName": "Fall Fest 2026",
+  "eventType": "Community Festival",
+  "summary": "Two-day sample event with family activities, food vendors, music, and downtown map locations.",
+  "dateLabel": "September 11\u201312, 2026",
+  "areaLabel": "Downtown Mount Pulaski",
+  "days": [
+    {
+      "id": "fri",
+      "label": "Friday"
+    },
+    {
+      "id": "sat",
+      "label": "Saturday"
+    }
+  ],
+  "locations": [
+    {
+      "id": "square",
+      "name": "Town Square",
+      "address": "123 Main St",
+      "mapX": 30,
+      "mapY": 42,
+      "description": "Main vendor zone and welcome area.",
+      "notes": "Open both days.",
+      "directionsText": "Use Town Square public parking.",
+      "pinIcon": "\ud83c\udfaa"
+    },
+    {
+      "id": "stage",
+      "name": "Main Stage",
+      "address": "100 Festival Ave",
+      "mapX": 62,
+      "mapY": 34,
+      "description": "Live music and announcements.",
+      "notes": "Seating nearby.",
+      "directionsText": "Best reached from north lot.",
+      "pinIcon": "\ud83c\udfb5"
+    },
+    {
+      "id": "kids",
+      "name": "Kids Corner",
+      "address": "80 Maple St",
+      "mapX": 70,
+      "mapY": 70,
+      "description": "Games, crafts, and family activities.",
+      "notes": "Kid-friendly zone.",
+      "directionsText": "Near restrooms and stroller parking.",
+      "pinIcon": "\ud83c\udf88"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "ff1",
+      "dayId": "fri",
+      "title": "Opening Ceremony",
+      "startTime": "5:00 PM",
+      "endTime": "5:30 PM",
+      "locationId": "stage",
+      "category": "Ceremony",
+      "description": "Kickoff welcome with local announcements.",
+      "vendorIds": []
+    },
+    {
+      "id": "ff2",
+      "dayId": "fri",
+      "title": "Food Truck Row Opens",
+      "startTime": "5:00 PM",
+      "endTime": "8:30 PM",
+      "locationId": "square",
+      "category": "Food",
+      "description": "Sample local trucks and fair food favorites.",
+      "vendorIds": [
+        "v1",
+        "v2"
+      ]
+    },
+    {
+      "id": "ff3",
+      "dayId": "sat",
+      "title": "Kids Craft Hour",
+      "startTime": "10:00 AM",
+      "endTime": "11:00 AM",
+      "locationId": "kids",
+      "category": "Family",
+      "description": "Hands-on activity table for children.",
+      "vendorIds": [
+        "v3"
+      ]
+    },
+    {
+      "id": "ff4",
+      "dayId": "sat",
+      "title": "Evening Concert",
+      "startTime": "7:00 PM",
+      "endTime": "9:00 PM",
+      "locationId": "stage",
+      "category": "Entertainment",
+      "description": "Live downtown music set.",
+      "vendorIds": []
+    }
+  ],
+  "vendors": [
+    {
+      "id": "v1",
+      "name": "Prairie Smoke BBQ",
+      "locationId": "square",
+      "category": "Food",
+      "description": "BBQ plates, sandwiches, and lemonade.",
+      "booth": "F-01",
+      "hours": "Fri 5:00 PM\u20138:30 PM / Sat 11:00 AM\u20138:00 PM"
+    },
+    {
+      "id": "v2",
+      "name": "Sweet Swirl Ice Cream",
+      "locationId": "square",
+      "category": "Dessert",
+      "description": "Soft serve, floats, and kids cones.",
+      "booth": "F-02",
+      "hours": "Fri 5:00 PM\u20138:30 PM / Sat 11:00 AM\u20138:00 PM"
+    },
+    {
+      "id": "v3",
+      "name": "Craft Tent Volunteers",
+      "locationId": "kids",
+      "category": "Activity",
+      "description": "Community-run craft tables and coloring station.",
+      "booth": "K-01",
+      "hours": "Sat 10:00 AM\u20132:00 PM"
+    }
+  ]
+}
