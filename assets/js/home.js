@@ -1,14 +1,18 @@
 const eventSources = [
-  { file: 'data/fall-fest-2026.json', page: 'fall-fest.html', slug: 'fall-fest' },
-  { file: 'data/second-fridays-2026.json', page: 'second-fridays.html', slug: 'second-fridays' },
-  { file: 'data/christmas-on-vinegar-hill-2026.json', page: 'christmas-on-vinegar-hill.html', slug: 'christmas-on-vinegar-hill' }
+  { file: 'data/fall-fest-2026.json', page: 'fall-fest.html', slug: 'fall-fest', bucket: 'Fall Fest' },
+  { file: 'data/second-fridays-2026.json', page: 'second-fridays.html', slug: 'second-fridays', bucket: '2nd Fridays' },
+  { file: 'data/christmas-on-vinegar-hill-2026.json', page: 'christmas-on-vinegar-hill.html', slug: 'christmas-on-vinegar-hill', bucket: 'Christmas' },
+  { file: 'data/community-events-2026.json', page: 'community-events.html', slug: 'community-events', bucket: 'Community' },
+  { file: 'data/high-school-events-2026.json', page: 'high-school-events.html', slug: 'high-school-events', bucket: 'School' },
+  { file: 'data/town-services-2026.json', page: 'town-services.html', slug: 'town-services', bucket: 'Town Services' }
 ];
 
 const homeState = {
   view: 'month',
   anchorDate: new Date(),
   events: [],
-  datasets: []
+  datasets: [],
+  selectedFilters: new Set(['All'])
 };
 
 const homeEl = {
@@ -18,7 +22,8 @@ const homeEl = {
   prev: document.getElementById('prev-period'),
   next: document.getElementById('next-period'),
   viewButtons: Array.from(document.querySelectorAll('.view-button')),
-  summaryCards: document.getElementById('event-summary-cards')
+  summaryCards: document.getElementById('event-summary-cards'),
+  filters: document.getElementById('calendar-filters')
 };
 
 function startOfDay(date) {
@@ -85,6 +90,17 @@ function inRange(date, start, end) {
   return startOfDay(date) >= startOfDay(start) && startOfDay(date) <= startOfDay(end);
 }
 
+function currentFilters() {
+  if (homeState.selectedFilters.has('All') || homeState.selectedFilters.size === 0) return null;
+  return Array.from(homeState.selectedFilters);
+}
+
+function filteredEvents() {
+  const filters = currentFilters();
+  if (!filters) return homeState.events;
+  return homeState.events.filter(event => filters.includes(event.bucket));
+}
+
 async function loadData() {
   const loaded = await Promise.all(
     eventSources.map(async source => {
@@ -97,13 +113,11 @@ async function loadData() {
   homeState.datasets = loaded;
   homeState.events = loaded.flatMap(({ source, data }) => {
     const dayMap = new Map((data.days || []).map(day => [day.id, day]));
-    const firstDate = (data.dates || [])[0];
+    const firstDate = (data.dates || [])[0] || (data.days || [])[0]?.date;
 
     return (data.schedule || []).map(item => {
       let actualDate = item.date || dayMap.get(item.dayId)?.date || firstDate;
-      if (!actualDate) {
-        actualDate = new Date().toISOString().slice(0, 10);
-      }
+      if (!actualDate) actualDate = new Date().toISOString().slice(0, 10);
       const location = (data.locations || []).find(loc => loc.id === item.locationId);
       return {
         id: item.id,
@@ -118,22 +132,46 @@ async function loadData() {
         eventPage: source.page,
         sourceFile: source.file,
         pageSlug: source.slug,
-        description: item.description
+        description: item.description,
+        bucket: source.bucket
       };
     });
   }).sort((a, b) => parseEventDate(a.date, a.startTime) - parseEventDate(b.date, b.startTime));
 
   const today = new Date();
-  const currentMonthEvent = homeState.events.find(event => {
-    const eventDate = new Date(`${event.date}T12:00:00`);
-    return eventDate.getMonth() === today.getMonth() && eventDate.getFullYear() === today.getFullYear();
-  });
-
-  homeState.anchorDate = currentMonthEvent
-    ? new Date(`${currentMonthEvent.date}T12:00:00`)
-    : today;
-
+  homeState.anchorDate = today;
   renderHome();
+}
+
+function renderFilterChips() {
+  if (!homeEl.filters) return;
+  homeEl.filters.innerHTML = '';
+  const filters = ['All', 'Community', 'School', 'Town Services', 'Fall Fest', '2nd Fridays', 'Christmas'];
+
+  filters.forEach(name => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    const active = homeState.selectedFilters.has(name);
+    btn.className = `filter-chip ${active ? 'active' : ''}`;
+    btn.textContent = name;
+    btn.addEventListener('click', () => {
+      if (name === 'All') {
+        homeState.selectedFilters = new Set(['All']);
+      } else {
+        homeState.selectedFilters.delete('All');
+        if (homeState.selectedFilters.has(name)) {
+          homeState.selectedFilters.delete(name);
+        } else {
+          homeState.selectedFilters.add(name);
+        }
+        if (homeState.selectedFilters.size === 0) {
+          homeState.selectedFilters = new Set(['All']);
+        }
+      }
+      renderHome();
+    });
+    homeEl.filters.appendChild(btn);
+  });
 }
 
 function renderWeekdays() {
@@ -152,7 +190,7 @@ function renderWeekdays() {
 }
 
 function periodEvents(start, end) {
-  return homeState.events.filter(event => inRange(new Date(`${event.date}T12:00:00`), start, end));
+  return filteredEvents().filter(event => inRange(new Date(`${event.date}T12:00:00`), start, end));
 }
 
 function updateCalendarTitle() {
@@ -172,12 +210,12 @@ function updateCalendarTitle() {
 
 function createEventChip(event) {
   const a = document.createElement('a');
-  a.className = 'calendar-event-chip';
+  a.className = `calendar-event-chip bucket-${event.bucket.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   a.href = `${event.eventPage}#${event.id}`;
   a.innerHTML = `
     <span class="event-time">${event.startTime}</span>
     <span class="event-text">${event.title}</span>
-    <span class="event-meta">${event.eventName}</span>
+    <span class="event-meta">${event.bucket}</span>
   `;
   return a;
 }
@@ -195,15 +233,15 @@ function renderMonthView() {
   const events = periodEvents(start, end);
 
   for (let cursor = new Date(start); cursor <= end; cursor = addDays(cursor, 1)) {
-    const dayCell = document.createElement('article');
     const currentDate = new Date(cursor);
     const isMuted = currentDate.getMonth() !== anchor.getMonth();
     const isToday = isSameDate(currentDate, new Date());
-    dayCell.className = `calendar-day-card ${isMuted ? 'muted' : ''} ${isToday ? 'today' : ''}`;
+    const dayCell = document.createElement('article');
+    dayCell.className = `calendar-day-card proper-grid ${isMuted ? 'muted' : ''} ${isToday ? 'today' : ''}`;
 
     const header = document.createElement('div');
     header.className = 'calendar-day-header';
-    header.innerHTML = `<span class="calendar-day-number">${currentDate.getDate()}</span><span class="calendar-day-label">${formatDateLabel(currentDate)}</span>`;
+    header.innerHTML = `<span class="calendar-day-number">${currentDate.getDate()}</span>`;
     dayCell.appendChild(header);
 
     const list = document.createElement('div');
@@ -213,10 +251,16 @@ function renderMonthView() {
     if (!dayEvents.length) {
       const empty = document.createElement('div');
       empty.className = 'calendar-empty';
-      empty.textContent = 'No events';
+      empty.textContent = '';
       list.appendChild(empty);
     } else {
-      dayEvents.forEach(event => list.appendChild(createEventChip(event)));
+      dayEvents.slice(0, 4).forEach(event => list.appendChild(createEventChip(event)));
+      if (dayEvents.length > 4) {
+        const more = document.createElement('div');
+        more.className = 'more-events-label';
+        more.textContent = `+${dayEvents.length - 4} more`;
+        list.appendChild(more);
+      }
     }
 
     dayCell.appendChild(list);
@@ -304,7 +348,7 @@ function renderSummaryCards() {
     card.className = 'event-launch-card';
     card.href = source.page;
     card.innerHTML = `
-      <span class="pill">${data.eventType || 'Event'}</span>
+      <span class="pill">${source.bucket}</span>
       <h2>${data.eventName}</h2>
       <p>${data.summary}</p>
       <div class="detail-row"><strong>${data.dateLabel}</strong></div>
@@ -316,6 +360,7 @@ function renderSummaryCards() {
 
 function renderHome() {
   updateCalendarTitle();
+  renderFilterChips();
   renderWeekdays();
   renderSummaryCards();
 
@@ -328,13 +373,9 @@ function shiftPeriod(direction) {
   const multiplier = direction === 'next' ? 1 : -1;
   const nextDate = new Date(homeState.anchorDate);
 
-  if (homeState.view === 'month') {
-    nextDate.setMonth(nextDate.getMonth() + multiplier);
-  } else if (homeState.view === 'week') {
-    nextDate.setDate(nextDate.getDate() + (7 * multiplier));
-  } else {
-    nextDate.setDate(nextDate.getDate() + multiplier);
-  }
+  if (homeState.view === 'month') nextDate.setMonth(nextDate.getMonth() + multiplier);
+  else if (homeState.view === 'week') nextDate.setDate(nextDate.getDate() + (7 * multiplier));
+  else nextDate.setDate(nextDate.getDate() + multiplier);
 
   homeState.anchorDate = nextDate;
   renderHome();
