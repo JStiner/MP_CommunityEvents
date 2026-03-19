@@ -410,7 +410,11 @@ function renderLocations(data) {
 }
 
 function renderFlyer(data) {
-  if (!el.flyerPanel || !data.flyer) return;
+  if (!el.flyerPanel) return;
+  if (!data.flyer) {
+    el.flyerPanel.innerHTML = '<div class="empty-state">Flyer content coming soon.</div>';
+    return;
+  }
   const flyer = data.flyer;
 
   el.flyerPanel.innerHTML = `
@@ -507,15 +511,34 @@ function openScheduleFromHash() {
   }, 60);
 }
 
+async function loadEventData(filePath) {
+  const response = await fetch(filePath);
+  if (!response.ok) {
+    throw new Error(`Failed to load ${filePath} (${response.status})`);
+  }
+
+  const data = await response.json();
+  if (!data?._split) return data;
+
+  const basePath = filePath.includes('/') ? filePath.slice(0, filePath.lastIndexOf('/') + 1) : '';
+  const entries = await Promise.all(
+    Object.entries(data._split).map(async ([key, relativePath]) => {
+      const partResponse = await fetch(`${basePath}${relativePath}`);
+      if (!partResponse.ok) {
+        throw new Error(`Failed to load ${basePath}${relativePath} (${partResponse.status})`);
+      }
+      return [key, await partResponse.json()];
+    })
+  );
+
+  return Object.assign({}, data, Object.fromEntries(entries));
+}
+
 async function init() {
   if (!eventFile) return;
 
   try {
-    const response = await fetch(eventFile);
-    if (!response.ok) {
-      throw new Error(`Failed to load ${eventFile} (${response.status})`);
-    }
-    const data = await response.json();
+    const data = await loadEventData(eventFile);
     state.eventData = data;
 
     renderHeader(data);
