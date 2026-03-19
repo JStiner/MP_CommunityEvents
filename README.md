@@ -28,3 +28,12 @@ The Christmas page now supports:
 - `assets/docs/christmas-on-vinegar-hill-vendor-reference.xlsx`
 
 - Month view stays in a true 7-column grid, including on smaller screens via horizontal scrolling.
+
+
+## Added in v5
+- General bucket pages and data files:
+  - `community-events.html`
+  - `high-school-events.html`
+  - `town-services.html`
+- Home calendar filter chips for event buckets
+- Proper light month-view calendar grid with color-coded event chips

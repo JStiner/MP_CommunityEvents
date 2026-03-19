@@ -6,15 +6,17 @@
   <title>Community Events Calendar</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
-<body class="page-shell">
-  <main class="phone-shell home-shell">
+<body class="page-shell soft-light">
+  <main class="phone-shell home-shell wide-shell">
     <header class="hero-card home-hero">
       <div class="hero-topline">
         <p class="eyebrow">Community Events Demo</p>
         <span class="pill">Static Demo Data</span>
       </div>
       <h1>Community Calendar</h1>
-      <p class="subtle">Defaulting to the current month. Switch between day, week, and month views, then open an event for maps, vendors, and details.</p>
+      <p class="subtle">Month view now uses a proper calendar grid. You can also filter which event buckets are visible.</p>
+
+      <div id="calendar-filters" class="filter-chip-row"></div>
 
       <div class="calendar-toolbar">
         <div class="segmented-control" role="tablist" aria-label="Calendar view">
@@ -31,13 +33,13 @@
       </div>
     </header>
 
-    <section class="calendar-shell">
+    <section class="calendar-shell proper-calendar-shell">
       <div id="calendar-weekdays" class="calendar-weekdays month-only"></div>
       <div id="calendar-grid" class="calendar-grid"></div>
     </section>
 
     <section class="info-card">
-      <h3>Included Demo Events</h3>
+      <h3>Included Event Buckets</h3>
       <div id="event-summary-cards" class="grid-cards"></div>
     </section>
   </main>
