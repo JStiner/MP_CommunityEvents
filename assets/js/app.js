@@ -156,19 +156,27 @@ function renderSchedule(data) {
   });
 }
 
-function showLocationModal(location, data) {
-  const locationVendors = getVendorsByLocation(location.id, data);
-  const locationEvents = getScheduleByLocation(location.id, data);
+function renderVendorSection(location, locationVendors) {
+  if (!location?.multiVendor || !locationVendors?.length) return '';
 
-  const vendorsHtml = locationVendors.length
-    ? `<div class="modal-list">${locationVendors.map(v => `
+  return `
+    <hr class="modal-divider" />
+    <h3>Vendors at this location</h3>
+    <div class="modal-list">
+      ${locationVendors.map(v => `
         <div class="modal-list-item">
           <strong>${v.name}</strong>
           <div>${v.description || ''}</div>
           <div class="muted-inline">${v.hours || ''}</div>
         </div>
-      `).join('')}</div>`
-    : '<p>No vendor list loaded yet.</p>';
+      `).join('')}
+    </div>
+  `;
+}
+
+function showLocationModal(location, data) {
+  const locationVendors = getVendorsByLocation(location.id, data);
+  const locationEvents = getScheduleByLocation(location.id, data);
 
   const eventsHtml = locationEvents.length
     ? `<div class="modal-list">${locationEvents.map(e => `
@@ -187,9 +195,7 @@ function showLocationModal(location, data) {
       <p><strong>Hours:</strong> ${location.hours || location.notes || 'See event schedule.'}</p>
       <p>${location.description}</p>
       ${badgeMarkup(location.tags)}
-      <hr class="modal-divider" />
-      <h3>Vendors at this location</h3>
-      ${vendorsHtml}
+      ${renderVendorSection(location, locationVendors)}
       <hr class="modal-divider" />
       <h3>Scheduled items</h3>
       ${eventsHtml}
