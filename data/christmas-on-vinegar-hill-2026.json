@@ -7,7 +7,8 @@
   "days": [
     {
       "id": "holiday",
-      "label": "Saturday"
+      "label": "Saturday",
+      "date": "2026-12-05"
     }
   ],
   "locations": [
@@ -113,5 +114,8 @@
       "booth": "M-06",
       "hours": "11:00 AM\u20134:00 PM"
     }
+  ],
+  "dates": [
+    "2026-12-05"
   ]
 }

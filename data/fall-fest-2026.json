@@ -7,11 +7,13 @@
   "days": [
     {
       "id": "fri",
-      "label": "Friday"
+      "label": "Friday",
+      "date": "2026-09-11"
     },
     {
       "id": "sat",
-      "label": "Saturday"
+      "label": "Saturday",
+      "date": "2026-09-12"
     }
   ],
   "locations": [
@@ -128,5 +130,9 @@
       "booth": "K-01",
       "hours": "Sat 10:00 AM\u20132:00 PM"
     }
+  ],
+  "dates": [
+    "2026-09-11",
+    "2026-09-12"
   ]
 }
