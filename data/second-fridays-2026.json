@@ -1,14 +1,29 @@
 {
-  "eventName": "2nd Fridays Demo",
+  "eventName": "2nd Fridays 2026",
   "eventType": "Monthly Downtown Event",
-  "summary": "One-day sample event using the same layout with smaller schedule, vendor, and location data.",
-  "dateLabel": "May 8, 2026",
+  "summary": "Monthly downtown 2nd Fridays schedule for May through August 2026 with market, music, food, and family activity demo data.",
+  "dateLabel": "May 8, June 12, July 10, August 14, 2026",
   "areaLabel": "Historic Downtown",
   "days": [
     {
-      "id": "day1",
+      "id": "may",
       "label": "Friday",
       "date": "2026-05-08"
+    },
+    {
+      "id": "jun",
+      "label": "Friday",
+      "date": "2026-06-12"
+    },
+    {
+      "id": "jul",
+      "label": "Friday",
+      "date": "2026-07-10"
+    },
+    {
+      "id": "aug",
+      "label": "Friday",
+      "date": "2026-08-14"
     }
   ],
   "locations": [
@@ -21,7 +36,7 @@
       "description": "Central meetup space for booths and music.",
       "notes": "Main gathering point.",
       "directionsText": "Street parking available.",
-      "pinIcon": "\u2728"
+      "pinIcon": "✨"
     },
     {
       "id": "coffee",
@@ -32,27 +47,26 @@
       "description": "Small acoustic sets and seating.",
       "notes": "Outdoor seating.",
       "directionsText": "Walk east from the plaza.",
-      "pinIcon": "\u2615"
+      "pinIcon": "☕"
     }
   ],
   "schedule": [
     {
-      "id": "sf1",
-      "dayId": "day1",
-      "title": "Vendor Setup Opens",
-      "startTime": "4:30 PM",
-      "endTime": "5:30 PM",
+      "id": "sf-may-1",
+      "dayId": "may",
+      "date": "2026-05-08",
+      "title": "Vendor Market Opens",
+      "startTime": "5:00 PM",
+      "endTime": "8:00 PM",
       "locationId": "plaza",
       "category": "Market",
-      "description": "Shops and popup booths begin service.",
-      "vendorIds": [
-        "s1",
-        "s2"
-      ]
+      "description": "Downtown pop-up vendors, local shopping, and community booths.",
+      "vendorIds": ["s1", "s2"]
     },
     {
-      "id": "sf2",
-      "dayId": "day1",
+      "id": "sf-may-2",
+      "dayId": "may",
+      "date": "2026-05-08",
       "title": "Acoustic Patio Set",
       "startTime": "6:00 PM",
       "endTime": "7:30 PM",
@@ -60,29 +74,20 @@
       "category": "Music",
       "description": "Relaxed live music on the patio.",
       "vendorIds": []
-    }
-  ],
-  "vendors": [
-    {
-      "id": "s1",
-      "name": "Maple Street Boutique",
-      "locationId": "plaza",
-      "category": "Retail",
-      "description": "Seasonal gifts and accessories.",
-      "booth": "P-04",
-      "hours": "5:00 PM\u20138:00 PM"
     },
     {
-      "id": "s2",
-      "name": "Brick Oven Pizza Slice Bar",
+      "id": "sf-jun-1",
+      "dayId": "jun",
+      "date": "2026-06-12",
+      "title": "Summer Market Night",
+      "startTime": "5:00 PM",
+      "endTime": "8:30 PM",
       "locationId": "plaza",
-      "category": "Food",
-      "description": "Quick slices and drinks.",
-      "booth": "P-07",
-      "hours": "5:00 PM\u20138:00 PM"
-    }
-  ],
-  "dates": [
-    "2026-05-08"
-  ]
-}
+      "category": "Market",
+      "description": "Open-air shopping, family strolling, and summer downtown activity.",
+      "vendorIds": ["s1", "s2"]
+    },
+    {
+      "id": "sf-jun-2",
+      "dayId": "jun",
+      "date": "2026-06-12",
