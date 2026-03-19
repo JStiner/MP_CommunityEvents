@@ -300,7 +300,7 @@ function renderLocations(data) {
         <div class="detail-row"><strong>Address:</strong> ${location.address}</div>
         <div class="detail-row"><strong>Hours:</strong> ${location.hours || 'TBD'}</div>
         <div class="detail-row">${location.description}</div>
-        <div class="detail-row"><strong>Vendors loaded:</strong> ${vendorsAtLocation.length}</div>
+        ${location.multiVendor ? `<div class="detail-row"><strong>Vendors loaded:</strong> ${vendorsAtLocation.length}</div>` : ''}
         ${badgeMarkup(location.tags)}
       `;
       card.appendChild(makeButton('View details', () => showLocationModal(location, data)));
