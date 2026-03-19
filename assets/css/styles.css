@@ -529,16 +529,22 @@ h3 {
 }
 
 @media (max-width: 700px) {
-  .month-grid {
-    grid-template-columns: 1fr;
+  .calendar-shell {
+    overflow-x: auto;
+    padding-bottom: 4px;
   }
 
-  .calendar-weekdays.month-only {
-    display: none !important;
+  .calendar-weekdays.month-only,
+  .month-grid {
+    min-width: 760px;
+  }
+
+  .month-grid {
+    grid-template-columns: repeat(7, minmax(96px, 1fr));
   }
 
   .calendar-day-card {
-    min-height: unset;
+    min-height: 140px;
   }
 
   .calendar-title {
@@ -720,4 +726,25 @@ h3 {
   border: 0;
   border-top: 1px solid rgba(145, 164, 190, 0.22);
   margin: 14px 0;
+}
+
+
+.month-grid .calendar-event-chip {
+  padding: 8px 9px;
+}
+
+.month-grid .event-time {
+  font-size: 0.72rem;
+}
+
+.month-grid .event-text {
+  font-size: 0.82rem;
+}
+
+.month-grid .event-meta {
+  font-size: 0.7rem;
+}
+
+.month-grid .calendar-day-card {
+  overflow: hidden;
 }
