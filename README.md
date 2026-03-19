@@ -2,8 +2,6 @@
 
 Static GitHub Pages starter for a community events app.
 
-https://jstiner.github.io/MP_CommunityEvents/index.html
-
 ## Included
 - Home page calendar with month / week / day views
 - Separate event pages
@@ -39,3 +37,5 @@ The Christmas page now supports:
   - `town-services.html`
 - Home calendar filter chips for event buckets
 - Proper light month-view calendar grid with color-coded event chips
+
+- Location modal vendor lists now render only for locations marked `multiVendor: true`.
