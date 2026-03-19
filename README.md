@@ -60,3 +60,11 @@ The Christmas page now supports:
 - Updated `data/fall-fest-2026.json` with 2025 Fall Festival schedule content transcribed from the flyer and added theme metadata.
 
 - Demo data dates have been normalized to 2026 across the included event JSON files.
+
+
+## Local Testing Note
+This site loads event data from JSON files using `fetch()`. If you open the HTML directly from a ZIP or local folder with a `file://` path, browsers often block the JSON loads and the pages will look empty.
+
+Use one of these instead:
+- GitHub Pages
+- a local web server such as `python -m http.server`
