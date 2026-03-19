@@ -1,4 +1,3 @@
-
 const eventFile = document.documentElement.dataset.eventFile;
 
 const state = {
@@ -18,6 +17,8 @@ const el = {
   mapLocationList: document.getElementById('map-location-list'),
   vendorList: document.getElementById('vendor-list'),
   locationList: document.getElementById('location-list'),
+  flyerPanel: document.getElementById('flyer-panel'),
+  resourceLinks: document.getElementById('resource-links'),
   modal: document.getElementById('detail-modal'),
   modalKicker: document.getElementById('modal-kicker'),
   modalTitle: document.getElementById('modal-title'),
@@ -29,10 +30,11 @@ function formatTimeRange(start, end) {
   return `${start} – ${end}`;
 }
 
-function makeButton(label, onClick) {
+function makeButton(label, onClick, className = '') {
   const button = document.createElement('button');
   button.type = 'button';
   button.textContent = label;
+  if (className) button.className = className;
   button.addEventListener('click', onClick);
   return button;
 }
@@ -48,15 +50,46 @@ function closeModal() {
   el.modal.classList.add('hidden');
 }
 
+function getLocationById(id, data = state.eventData) {
+  return data?.locations?.find(loc => loc.id === id);
+}
+
+function getVendorsByLocation(locationId, data = state.eventData) {
+  return (data?.vendors || []).filter(v => v.locationId === locationId);
+}
+
+function getScheduleByLocation(locationId, data = state.eventData) {
+  return (data?.schedule || []).filter(s => s.locationId === locationId);
+}
+
+function badgeMarkup(tags = []) {
+  if (!tags.length) return '';
+  return `<div class="badge-row">${tags.map(tag => `<span class="mini-badge">${tag}</span>`).join('')}</div>`;
+}
+
 function renderHeader(data) {
-  el.eventEyebrow.textContent = data.eventType || 'Community Event';
-  el.eventName.textContent = data.eventName;
-  el.eventSummary.textContent = data.summary;
-  el.eventDates.textContent = data.dateLabel;
-  el.eventLocation.textContent = data.areaLabel;
+  if (el.eventEyebrow) el.eventEyebrow.textContent = data.eventType || 'Community Event';
+  if (el.eventName) el.eventName.textContent = data.eventName;
+  if (el.eventSummary) el.eventSummary.textContent = data.summary;
+  if (el.eventDates) el.eventDates.textContent = data.dateLabel;
+  if (el.eventLocation) el.eventLocation.textContent = data.areaLabel;
+
+  if (el.resourceLinks) {
+    el.resourceLinks.innerHTML = '';
+    (data.resources || []).forEach(resource => {
+      const a = document.createElement('a');
+      a.className = 'resource-link';
+      a.href = resource.href;
+      a.textContent = resource.label;
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener');
+      el.resourceLinks.appendChild(a);
+    });
+  }
 }
 
 function renderDayFilter(data) {
+  if (!el.dayFilter) return;
   el.dayFilter.innerHTML = '';
   if (!data.days?.length) return;
   state.selectedDate = state.selectedDate || data.days[0].id;
@@ -76,8 +109,9 @@ function renderDayFilter(data) {
 }
 
 function renderSchedule(data) {
+  if (!el.scheduleList) return;
   el.scheduleList.innerHTML = '';
-  const filtered = data.schedule.filter(item => item.dayId === state.selectedDate);
+  const filtered = (data.schedule || []).filter(item => item.dayId === state.selectedDate);
 
   if (!filtered.length) {
     el.scheduleList.innerHTML = '<div class="empty-state">No events for this date yet.</div>';
@@ -87,8 +121,9 @@ function renderSchedule(data) {
   filtered.forEach(item => {
     const card = document.createElement('article');
     card.className = 'schedule-card';
+    card.id = item.id;
 
-    const location = data.locations.find(loc => loc.id === item.locationId);
+    const location = getLocationById(item.locationId, data);
     const vendorText = item.vendorIds?.length
       ? data.vendors.filter(v => item.vendorIds.includes(v.id)).map(v => v.name).join(', ')
       : 'No linked vendors';
@@ -96,10 +131,10 @@ function renderSchedule(data) {
     card.innerHTML = `
       <div class="schedule-top">
         <span class="time-range">${formatTimeRange(item.startTime, item.endTime)}</span>
+        <span class="mini-badge">${item.category}</span>
       </div>
       <h2>${item.title}</h2>
       <div class="detail-row"><strong>Location:</strong> ${location?.name || 'TBD'}</div>
-      <div class="detail-row"><strong>Category:</strong> ${item.category}</div>
       <div class="detail-row">${item.description}</div>
     `;
 
@@ -121,7 +156,51 @@ function renderSchedule(data) {
   });
 }
 
+function showLocationModal(location, data) {
+  const locationVendors = getVendorsByLocation(location.id, data);
+  const locationEvents = getScheduleByLocation(location.id, data);
+
+  const vendorsHtml = locationVendors.length
+    ? `<div class="modal-list">${locationVendors.map(v => `
+        <div class="modal-list-item">
+          <strong>${v.name}</strong>
+          <div>${v.description || ''}</div>
+          <div class="muted-inline">${v.hours || ''}</div>
+        </div>
+      `).join('')}</div>`
+    : '<p>No vendor list loaded yet.</p>';
+
+  const eventsHtml = locationEvents.length
+    ? `<div class="modal-list">${locationEvents.map(e => `
+        <div class="modal-list-item">
+          <strong>${e.title}</strong>
+          <div>${formatTimeRange(e.startTime, e.endTime)}</div>
+        </div>
+      `).join('')}</div>`
+    : '<p>No specific scheduled items at this stop.</p>';
+
+  openModal(
+    location.multiVendor ? 'Multi-Vendor Location' : 'Location',
+    location.name,
+    `
+      <p><strong>Address:</strong> ${location.address}</p>
+      <p><strong>Hours:</strong> ${location.hours || location.notes || 'See event schedule.'}</p>
+      <p>${location.description}</p>
+      ${badgeMarkup(location.tags)}
+      <hr class="modal-divider" />
+      <h3>Vendors at this location</h3>
+      ${vendorsHtml}
+      <hr class="modal-divider" />
+      <h3>Scheduled items</h3>
+      ${eventsHtml}
+      <hr class="modal-divider" />
+      <p><strong>Directions:</strong> ${location.directionsText || 'Add Google Maps link later.'}</p>
+    `
+  );
+}
+
 function renderMap(data) {
+  if (!el.mapPins || !el.mapLocationList) return;
   el.mapPins.innerHTML = '';
   el.mapLocationList.innerHTML = '';
 
@@ -139,52 +218,41 @@ function renderMap(data) {
     const card = document.createElement('article');
     card.className = 'item-card';
     card.innerHTML = `
-      <h2>${location.name}</h2>
+      <div class="card-header-line">
+        <h2>${location.name}</h2>
+        ${location.multiVendor ? '<span class="mini-badge">Multi Vendor</span>' : ''}
+      </div>
       <div class="detail-row"><strong>Address:</strong> ${location.address}</div>
+      <div class="detail-row"><strong>Hours:</strong> ${location.hours || 'TBD'}</div>
       <div class="detail-row">${location.description}</div>
+      ${badgeMarkup(location.tags)}
     `;
     card.appendChild(makeButton('Open location details', () => showLocationModal(location, data)));
     el.mapLocationList.appendChild(card);
   });
 }
 
-function showLocationModal(location, data) {
-  const locationVendors = data.vendors.filter(v => v.locationId === location.id);
-  const locationEvents = data.schedule.filter(s => s.locationId === location.id);
-  openModal(
-    'Location',
-    location.name,
-    `
-      <p><strong>Address:</strong> ${location.address}</p>
-      <p>${location.description}</p>
-      <p><strong>Hours / Notes:</strong> ${location.notes || 'See schedule for active times.'}</p>
-      <p><strong>Vendors here:</strong> ${locationVendors.length ? locationVendors.map(v => v.name).join(', ') : 'None listed'}</p>
-      <p><strong>Scheduled items here:</strong> ${locationEvents.length ? locationEvents.map(e => e.title).join(', ') : 'None listed'}</p>
-      <p><strong>Directions:</strong> ${location.directionsText || 'Link this to Google Maps later.'}</p>
-    `
-  );
-}
-
 function renderVendors(data) {
+  if (!el.vendorList) return;
   el.vendorList.innerHTML = '';
-  data.vendors.forEach(vendor => {
-    const location = data.locations.find(loc => loc.id === vendor.locationId);
+  (data.vendors || []).forEach(vendor => {
+    const location = getLocationById(vendor.locationId, data);
     const card = document.createElement('article');
     card.className = 'vendor-card';
     card.innerHTML = `
       <h2>${vendor.name}</h2>
       <div class="detail-row"><strong>Category:</strong> ${vendor.category}</div>
       <div class="detail-row"><strong>Location:</strong> ${location?.name || 'TBD'}</div>
-      <div class="detail-row">${vendor.description}</div>
+      <div class="detail-row">${vendor.description || ''}</div>
     `;
     card.appendChild(makeButton('View vendor details', () => {
       openModal(
         'Vendor',
         vendor.name,
         `
-          <p><strong>Category:</strong> ${vendor.category}</p>
+          <p><strong>Category:</strong> ${vendor.category || 'Vendor'}</p>
           <p><strong>Location:</strong> ${location?.name || 'TBD'}</p>
-          <p>${vendor.description}</p>
+          <p>${vendor.description || ''}</p>
           <p><strong>Booth / Spot:</strong> ${vendor.booth || 'TBD'}</p>
           <p><strong>Hours:</strong> ${vendor.hours || 'Add live hours later.'}</p>
         `
@@ -195,18 +263,100 @@ function renderVendors(data) {
 }
 
 function renderLocations(data) {
+  if (!el.locationList) return;
   el.locationList.innerHTML = '';
-  data.locations.forEach(location => {
-    const card = document.createElement('article');
-    card.className = 'location-card';
-    card.innerHTML = `
-      <h2>${location.name}</h2>
-      <div class="detail-row"><strong>Address:</strong> ${location.address}</div>
-      <div class="detail-row">${location.description}</div>
-    `;
-    card.appendChild(makeButton('View details', () => showLocationModal(location, data)));
-    el.locationList.appendChild(card);
+
+  const groups = {};
+  (data.locations || []).forEach(location => {
+    const groupName = location.group || 'Locations';
+    groups[groupName] = groups[groupName] || [];
+    groups[groupName].push(location);
   });
+
+  Object.entries(groups).forEach(([groupName, locations]) => {
+    const wrapper = document.createElement('section');
+    wrapper.className = 'location-group';
+
+    const header = document.createElement('div');
+    header.className = 'section-kicker';
+    header.textContent = groupName;
+    wrapper.appendChild(header);
+
+    locations.forEach(location => {
+      const vendorsAtLocation = getVendorsByLocation(location.id, data);
+      const card = document.createElement('article');
+      card.className = 'location-card';
+      card.innerHTML = `
+        <div class="card-header-line">
+          <h2>${location.name}</h2>
+          ${location.multiVendor ? '<span class="mini-badge">Multi Vendor</span>' : ''}
+        </div>
+        <div class="detail-row"><strong>Address:</strong> ${location.address}</div>
+        <div class="detail-row"><strong>Hours:</strong> ${location.hours || 'TBD'}</div>
+        <div class="detail-row">${location.description}</div>
+        <div class="detail-row"><strong>Vendors loaded:</strong> ${vendorsAtLocation.length}</div>
+        ${badgeMarkup(location.tags)}
+      `;
+      card.appendChild(makeButton('View details', () => showLocationModal(location, data)));
+      wrapper.appendChild(card);
+    });
+
+    el.locationList.appendChild(wrapper);
+  });
+}
+
+function renderFlyer(data) {
+  if (!el.flyerPanel || !data.flyer) return;
+  const flyer = data.flyer;
+
+  el.flyerPanel.innerHTML = `
+    <section class="flyer-card">
+      <div class="flyer-hero">
+        <p class="eyebrow">Rendered from data</p>
+        <h2>${flyer.title}</h2>
+        <p class="subtle">${flyer.subtitle}</p>
+      </div>
+
+      <div class="legend-row">
+        ${(flyer.iconLegend || []).map(item => `<span class="legend-pill"><strong>${item.label}</strong> ${item.meaning}</span>`).join('')}
+      </div>
+
+      ${(flyer.sections || []).map(section => `
+        <section class="flyer-section">
+          <h3>${section.title}</h3>
+          <div class="flyer-entry-list">
+            ${(section.entries || []).map(entry => `
+              <article class="flyer-entry">
+                <div class="flyer-entry-top">
+                  <span class="flyer-number">${entry.number}</span>
+                  <div class="flyer-name-block">
+                    <h4>${entry.name}</h4>
+                    <div class="flyer-meta">${entry.address} • ${entry.hours}</div>
+                  </div>
+                </div>
+                <p>${entry.description}</p>
+                <div class="badge-row">${(entry.badges || []).map(b => `<span class="mini-badge">${b}</span>`).join('')}</div>
+              </article>
+            `).join('')}
+          </div>
+        </section>
+      `).join('')}
+
+      <section class="flyer-section">
+        <h3>Notes</h3>
+        <ul class="flyer-list">
+          ${(flyer.footerNotes || []).map(note => `<li>${note}</li>`).join('')}
+        </ul>
+      </section>
+
+      <section class="flyer-section">
+        <h3>Sponsors</h3>
+        <div class="sponsor-grid">
+          ${(flyer.sponsors || []).map(name => `<span class="sponsor-pill">${name}</span>`).join('')}
+        </div>
+      </section>
+    </section>
+  `;
 }
 
 function setupTabs() {
@@ -215,9 +365,42 @@ function setupTabs() {
       document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
       button.classList.add('active');
-      document.getElementById(button.dataset.tab).classList.add('active');
+      document.getElementById(button.dataset.tab)?.classList.add('active');
     });
   });
+}
+
+function openScheduleFromHash() {
+  const hash = window.location.hash?.replace('#', '');
+  if (!hash || !state.eventData?.schedule?.length) return;
+  const item = state.eventData.schedule.find(entry => entry.id === hash);
+  if (!item) return;
+
+  if (item.dayId) {
+    state.selectedDate = item.dayId;
+    renderDayFilter(state.eventData);
+    renderSchedule(state.eventData);
+  }
+
+  const location = getLocationById(item.locationId);
+  const vendorText = item.vendorIds?.length
+    ? state.eventData.vendors.filter(v => item.vendorIds.includes(v.id)).map(v => v.name).join(', ')
+    : 'No linked vendors';
+
+  setTimeout(() => {
+    document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    openModal(
+      'Schedule Item',
+      item.title,
+      `
+        <p><strong>Time:</strong> ${formatTimeRange(item.startTime, item.endTime)}</p>
+        <p><strong>Location:</strong> ${location?.name || 'TBD'}</p>
+        <p><strong>Category:</strong> ${item.category}</p>
+        <p>${item.description}</p>
+        <p><strong>Linked Vendors:</strong> ${vendorText}</p>
+      `
+    );
+  }, 60);
 }
 
 async function init() {
@@ -232,6 +415,7 @@ async function init() {
   renderMap(data);
   renderVendors(data);
   renderLocations(data);
+  renderFlyer(data);
   setupTabs();
 
   el.closeModal?.addEventListener('click', closeModal);
@@ -241,6 +425,8 @@ async function init() {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeModal();
   });
+
+  openScheduleFromHash();
 }
 
 init();
