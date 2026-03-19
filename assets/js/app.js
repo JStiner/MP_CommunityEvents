@@ -61,6 +61,12 @@ function closeModal() {
   el.modal.classList.add('hidden');
 }
 
+function showLoadError(message) {
+  if (el.scheduleList) {
+    el.scheduleList.innerHTML = `<div class="empty-state error-state">${message}</div>`;
+  }
+}
+
 function getLocationById(id, data = state.eventData) {
   return data?.locations?.find(loc => loc.id === id);
 }
@@ -503,28 +509,37 @@ function openScheduleFromHash() {
 
 async function init() {
   if (!eventFile) return;
-  const response = await fetch(eventFile);
-  const data = await response.json();
-  state.eventData = data;
 
-  renderHeader(data);
-  renderDayFilter(data);
-  renderSchedule(data);
-  renderMap(data);
-  renderVendors(data);
-  renderLocations(data);
-  renderFlyer(data);
-  setupTabs();
+  try {
+    const response = await fetch(eventFile);
+    if (!response.ok) {
+      throw new Error(`Failed to load ${eventFile} (${response.status})`);
+    }
+    const data = await response.json();
+    state.eventData = data;
 
-  el.closeModal?.addEventListener('click', closeModal);
-  el.modal?.addEventListener('click', (event) => {
-    if (event.target === el.modal) closeModal();
-  });
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeModal();
-  });
+    renderHeader(data);
+    renderDayFilter(data);
+    renderSchedule(data);
+    renderMap(data);
+    renderVendors(data);
+    renderLocations(data);
+    renderFlyer(data);
+    setupTabs();
 
-  openScheduleFromHash();
+    el.closeModal?.addEventListener('click', closeModal);
+    el.modal?.addEventListener('click', (event) => {
+      if (event.target === el.modal) closeModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeModal();
+    });
+
+    openScheduleFromHash();
+  } catch (error) {
+    console.error(error);
+    showLoadError('Event data failed to load. If you opened the HTML directly from a ZIP or local folder, start a local web server or use GitHub Pages.');
+  }
 }
 
 init();

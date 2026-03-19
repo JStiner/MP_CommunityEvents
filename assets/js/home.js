@@ -101,14 +101,30 @@ function filteredEvents() {
   return homeState.events.filter(event => filters.includes(event.bucket));
 }
 
+function showHomeLoadError(message) {
+  if (homeEl.grid) {
+    homeEl.grid.innerHTML = `<div class="empty-state error-state">${message}</div>`;
+  }
+}
+
 async function loadData() {
-  const loaded = await Promise.all(
-    eventSources.map(async source => {
-      const response = await fetch(source.file);
-      const data = await response.json();
-      return { source, data };
-    })
-  );
+  let loaded;
+  try {
+    loaded = await Promise.all(
+      eventSources.map(async source => {
+        const response = await fetch(source.file);
+        if (!response.ok) {
+          throw new Error(`Failed to load ${source.file} (${response.status})`);
+        }
+        const data = await response.json();
+        return { source, data };
+      })
+    );
+  } catch (error) {
+    console.error(error);
+    showHomeLoadError('Calendar data failed to load. If you opened the site directly from a ZIP or local folder, serve it from a local web server or GitHub Pages.');
+    return;
+  }
 
   homeState.datasets = loaded;
   homeState.events = loaded.flatMap(({ source, data }) => {
