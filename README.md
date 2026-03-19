@@ -53,3 +53,5 @@ The Christmas page now supports:
 - `Schedule`
 
 - Added `Event Submissions` sheet to the vendor intake workbook for raw intake and review tracking.
+
+- Updated `data/fall-fest-2026.json` with 2025 Fall Festival schedule content transcribed from the flyer and added theme metadata.
