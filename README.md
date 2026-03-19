@@ -26,3 +26,5 @@ The Christmas page now supports:
 ## Reference Files
 - `assets/docs/christmas-on-vinegar-hill-2025-pamphlet.docx`
 - `assets/docs/christmas-on-vinegar-hill-vendor-reference.xlsx`
+
+- Month view stays in a true 7-column grid, including on smaller screens via horizontal scrolling.
