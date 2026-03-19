@@ -3,6 +3,7 @@ const eventFile = document.documentElement.dataset.eventFile;
 const state = {
   eventData: null,
   selectedDate: null,
+  filterMode: 'day'
 };
 
 const el = {
@@ -88,10 +89,72 @@ function renderHeader(data) {
   }
 }
 
+
+function getUniqueDates(data) {
+  return Array.from(new Set((data.schedule || []).map(item => item.date))).sort();
+}
+
+function getMonthOptions(data) {
+  const seen = new Set();
+  return getUniqueDates(data).map(dateStr => {
+    const date = new Date(`${dateStr}T12:00:00`);
+    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    if (seen.has(key)) return null;
+    seen.add(key);
+    return {
+      id: key,
+      label: date.toLocaleDateString(undefined, { month: 'short', year: 'numeric' })
+    };
+  }).filter(Boolean);
+}
+
+function getFilterMode(data) {
+  const uniqueDates = getUniqueDates(data);
+  return uniqueDates.length > 31 ? 'month' : 'day';
+}
+
+
 function renderDayFilter(data) {
   if (!el.dayFilter) return;
   el.dayFilter.innerHTML = '';
-  if (!data.days?.length) return;
+  if (!data.days?.length && !(data.schedule || []).length) return;
+
+  state.filterMode = getFilterMode(data);
+
+  if (state.filterMode === 'month') {
+    const monthOptions = getMonthOptions(data);
+    const today = new Date();
+    const defaultMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+    const fallbackMonth = monthOptions[0]?.id || defaultMonth;
+    state.selectedDate = state.selectedDate || (monthOptions.some(m => m.id === defaultMonth) ? defaultMonth : fallbackMonth);
+
+    const allChip = document.createElement('button');
+    allChip.type = 'button';
+    allChip.className = `day-chip ${state.selectedDate === 'all' ? 'active' : ''}`;
+    allChip.textContent = 'All';
+    allChip.addEventListener('click', () => {
+      state.selectedDate = 'all';
+      renderDayFilter(data);
+      renderSchedule(data);
+    });
+    el.dayFilter.appendChild(allChip);
+
+    monthOptions.forEach(month => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = `day-chip ${state.selectedDate === month.id ? 'active' : ''}`;
+      chip.textContent = month.label;
+      chip.addEventListener('click', () => {
+        state.selectedDate = month.id;
+        renderDayFilter(data);
+        renderSchedule(data);
+      });
+      el.dayFilter.appendChild(chip);
+    });
+
+    return;
+  }
+
   state.selectedDate = state.selectedDate || data.days[0].id;
 
   data.days.forEach(day => {
@@ -111,10 +174,23 @@ function renderDayFilter(data) {
 function renderSchedule(data) {
   if (!el.scheduleList) return;
   el.scheduleList.innerHTML = '';
-  const filtered = (data.schedule || []).filter(item => item.dayId === state.selectedDate);
+  let filtered = data.schedule || [];
+  if (state.filterMode === 'month') {
+    if (state.selectedDate !== 'all') {
+      filtered = filtered.filter(item => item.date && item.date.slice(0, 7) === state.selectedDate);
+    }
+  } else {
+    filtered = filtered.filter(item => item.dayId === state.selectedDate);
+  }
+
+  filtered = filtered.slice().sort((a, b) => {
+    const aDate = new Date(`${a.date}T${convertTimeTo24(a.startTime)}:00`);
+    const bDate = new Date(`${b.date}T${convertTimeTo24(b.startTime)}:00`);
+    return aDate - bDate;
+  });
 
   if (!filtered.length) {
-    el.scheduleList.innerHTML = '<div class="empty-state">No events for this date yet.</div>';
+    el.scheduleList.innerHTML = `<div class="empty-state">${state.filterMode === 'month' ? 'No events for this month yet.' : 'No events for this date yet.'}</div>`;
     return;
   }
 
@@ -128,12 +204,17 @@ function renderSchedule(data) {
       ? data.vendors.filter(v => item.vendorIds.includes(v.id)).map(v => v.name).join(', ')
       : 'No linked vendors';
 
+    const eventDateText = item.date
+      ? new Date(`${item.date}T12:00:00`).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })
+      : '';
+
     card.innerHTML = `
       <div class="schedule-top">
         <span class="time-range">${formatTimeRange(item.startTime, item.endTime)}</span>
         <span class="mini-badge">${item.category}</span>
       </div>
       <h2>${item.title}</h2>
+      ${state.filterMode === 'month' ? `<div class="detail-row"><strong>Date:</strong> ${eventDateText}</div>` : ''}
       <div class="detail-row"><strong>Location:</strong> ${location?.name || 'TBD'}</div>
       <div class="detail-row">${item.description}</div>
     `;
