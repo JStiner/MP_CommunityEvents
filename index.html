@@ -3,46 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Community Events</title>
+  <title>Community Events Calendar</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body class="page-shell">
   <main class="phone-shell home-shell">
-    <header class="hero-card">
-      <p class="eyebrow">Community Events Demo</p>
-      <h1>Choose an Event</h1>
-      <p class="subtle">Static GitHub Pages friendly app with soft iPhone-style cards, dummy data, reusable event layout, and separate data files per event.</p>
+    <header class="hero-card home-hero">
+      <div class="hero-topline">
+        <p class="eyebrow">Community Events Demo</p>
+        <span class="pill">Static Demo Data</span>
+      </div>
+      <h1>Community Calendar</h1>
+      <p class="subtle">Defaulting to the current month. Switch between day, week, and month views, then open an event for maps, vendors, and details.</p>
+
+      <div class="calendar-toolbar">
+        <div class="segmented-control" role="tablist" aria-label="Calendar view">
+          <button class="view-button active" data-view="month">Month</button>
+          <button class="view-button" data-view="week">Week</button>
+          <button class="view-button" data-view="day">Day</button>
+        </div>
+
+        <div class="calendar-nav">
+          <button id="prev-period" class="nav-button" aria-label="Previous period">←</button>
+          <div id="calendar-title" class="calendar-title">Loading...</div>
+          <button id="next-period" class="nav-button" aria-label="Next period">→</button>
+        </div>
+      </div>
     </header>
 
-    <section class="grid-cards">
-      <a class="event-launch-card" href="fall-fest.html">
-        <span class="pill">2-Day Event</span>
-        <h2>Fall Fest</h2>
-        <p>Schedule, map pins, vendors, popups, and location details.</p>
-      </a>
-
-      <a class="event-launch-card" href="second-fridays.html">
-        <span class="pill">1-Day Event</span>
-        <h2>2nd Fridays</h2>
-        <p>Smaller downtown event using the same reusable layout.</p>
-      </a>
-
-      <a class="event-launch-card" href="christmas-on-vinegar-hill.html">
-        <span class="pill">Location First</span>
-        <h2>Christmas on Vinegar Hill</h2>
-        <p>One-day event organized by stop, vendor, and directions.</p>
-      </a>
+    <section class="calendar-shell">
+      <div id="calendar-weekdays" class="calendar-weekdays month-only"></div>
+      <div id="calendar-grid" class="calendar-grid"></div>
     </section>
 
     <section class="info-card">
-      <h3>Project Layout</h3>
-      <ul class="soft-list">
-        <li>Separate HTML entry page for each event</li>
-        <li>Separate JSON data file for each event</li>
-        <li>Reusable event viewer logic in one JS file</li>
-        <li>Easy yearly rollover by updating only data files</li>
-      </ul>
+      <h3>Included Demo Events</h3>
+      <div id="event-summary-cards" class="grid-cards"></div>
     </section>
   </main>
+
+  <script src="assets/js/home.js"></script>
 </body>
 </html>
