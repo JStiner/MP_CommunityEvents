@@ -39,3 +39,17 @@ The Christmas page now supports:
 - Proper light month-view calendar grid with color-coded event chips
 
 - Location modal vendor lists now render only for locations marked `multiVendor: true`.
+
+
+## Added in v7
+- Non-multi-vendor location cards no longer show a vendor count.
+- Added Excel template for gathering event data:
+  - `assets/docs/vendor-intake-template.xlsx`
+
+### Template sheets
+- `Instructions`
+- `Locations`
+- `Vendors`
+- `Schedule`
+
+- Added `Event Submissions` sheet to the vendor intake workbook for raw intake and review tracking.
