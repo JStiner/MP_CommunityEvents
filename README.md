@@ -1,5 +1,5 @@
 ## Live Site
-- `https://jstiner.github.io/MP_CommunityEvents/`
+- https://jstiner.github.io/MP_CommunityEvents/
 
 # Community Events Calendar Demo
 
