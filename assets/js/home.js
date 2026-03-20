@@ -1,10 +1,10 @@
 const eventSources = [
-  { file: 'data/fall-fest-2026.json', page: 'fall-fest.html', slug: 'fall-fest', bucket: 'Fall Fest' },
-  { file: 'data/second-fridays-2026.json', page: 'second-fridays.html', slug: 'second-fridays', bucket: '2nd Fridays' },
-  { file: 'data/christmas-on-vinegar-hill-2026.json', page: 'christmas-on-vinegar-hill.html', slug: 'christmas-on-vinegar-hill', bucket: 'Christmas' },
-  { file: 'data/community-events-2026.json', page: 'community-events.html', slug: 'community-events', bucket: 'Community' },
-  { file: 'data/high-school-events-2026.json', page: 'high-school-events.html', slug: 'high-school-events', bucket: 'School' },
-  { file: 'data/town-services-2026.json', page: 'town-services.html', slug: 'town-services', bucket: 'Town Services' }
+  { file: 'data/fallfest/fall-fest-2026.json', page: 'fall-fest.html', slug: 'fall-fest', bucket: 'Fall Fest' },
+  { file: 'data/2ndfriday/second-fridays-2026.json', page: 'second-fridays.html', slug: 'second-fridays', bucket: '2nd Fridays' },
+  { file: 'data/covh/event.json', page: 'christmas-on-vinegar-hill.html', slug: 'christmas-on-vinegar-hill', bucket: 'Christmas' },
+  { file: 'data/community-events/community-events-2026.json', page: 'community-events.html', slug: 'community-events', bucket: 'Community' },
+  { file: 'data/high-school-events/high-school-events-2026.json', page: 'high-school-events.html', slug: 'high-school-events', bucket: 'School' },
+  { file: 'data/town-services/town-services-2026.json', page: 'town-services.html', slug: 'town-services', bucket: 'Town Services' }
 ];
 
 const homeState = {
@@ -107,16 +107,35 @@ function showHomeLoadError(message) {
   }
 }
 
+async function loadSourceData(source) {
+  const response = await fetch(source.file);
+  if (!response.ok) {
+    throw new Error(`Failed to load ${source.file} (${response.status})`);
+  }
+
+  const data = await response.json();
+  if (!data?._split) return data;
+
+  const basePath = source.file.includes('/') ? source.file.slice(0, source.file.lastIndexOf('/') + 1) : '';
+  const entries = await Promise.all(
+    Object.entries(data._split).map(async ([key, relativePath]) => {
+      const partResponse = await fetch(`${basePath}${relativePath}`);
+      if (!partResponse.ok) {
+        throw new Error(`Failed to load ${basePath}${relativePath} (${partResponse.status})`);
+      }
+      return [key, await partResponse.json()];
+    })
+  );
+
+  return Object.assign({}, data, Object.fromEntries(entries));
+}
+
 async function loadData() {
   let loaded;
   try {
     loaded = await Promise.all(
       eventSources.map(async source => {
-        const response = await fetch(source.file);
-        if (!response.ok) {
-          throw new Error(`Failed to load ${source.file} (${response.status})`);
-        }
-        const data = await response.json();
+        const data = await loadSourceData(source);
         return { source, data };
       })
     );
