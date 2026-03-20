@@ -1,6 +1,9 @@
 ## Live Site
 - https://jstiner.github.io/MP_CommunityEvents/
 
+## Dev Site
+- https://jstiner.github.io/MPEventsStaging/
+
 # Community Events Calendar Demo
 
 Static GitHub Pages starter for a community events app.
