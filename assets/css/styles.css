@@ -1875,3 +1875,243 @@ body.soft-light {
     font-size: 0.78rem;
   }
 }
+
+/* Home page desktop layout + theme toggle */
+.hero-topline-home {
+  align-items: flex-start;
+}
+
+.hero-topline-home h1 {
+  margin-bottom: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.88);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.theme-toggle-label {
+  font-size: 0.88rem;
+}
+
+.theme-toggle-track {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #e3ebfb 0%, #d2def5 100%);
+  border: 1px solid rgba(145, 164, 190, 0.35);
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(58, 75, 107, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.home-content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.bucket-rail {
+  min-width: 0;
+}
+
+.bucket-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bucket-stack .event-launch-card {
+  min-width: 0;
+}
+
+.bucket-stack .event-launch-card h2 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 1080px) {
+  .home-content-grid {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 18px;
+  }
+
+  .bucket-rail {
+    position: sticky;
+    top: 18px;
+  }
+
+  .bucket-stack {
+    max-height: calc(100vh - 180px);
+    overflow: auto;
+    padding-right: 4px;
+  }
+}
+
+/* Dark mode */
+body.theme-dark {
+  --bg: #0f1724;
+  --panel: rgba(17, 25, 40, 0.84);
+  --panel-strong: #131d2d;
+  --text: #eef4ff;
+  --muted: #afbed6;
+  --accent: #95b5ff;
+  --accent-soft: rgba(88, 120, 190, 0.28);
+  --border: rgba(124, 150, 194, 0.22);
+  --shadow: 0 20px 52px rgba(0, 0, 0, 0.38);
+  --color-community: #29445f;
+  --color-school: #473969;
+  --color-town: #584638;
+  --color-secondfriday: #6b4d3b;
+  --color-fallfest: #633f54;
+  --color-covh: #345542;
+  background:
+    radial-gradient(circle at top left, rgba(43, 69, 115, 0.3), transparent 35%),
+    radial-gradient(circle at top right, rgba(109, 55, 82, 0.24), transparent 28%),
+    linear-gradient(180deg, #0d1522 0%, #111b2a 100%);
+}
+
+body.theme-dark.soft-light {
+  background:
+    radial-gradient(circle at top left, rgba(43, 69, 115, 0.3), transparent 35%),
+    radial-gradient(circle at top right, rgba(109, 55, 82, 0.24), transparent 28%),
+    linear-gradient(180deg, #0d1522 0%, #111b2a 100%);
+}
+
+body.theme-dark .theme-toggle,
+body.theme-dark .filter-chip,
+body.theme-dark .day-chip,
+body.theme-dark .resource-link,
+body.theme-dark .weekday-pill,
+body.theme-dark .calendar-event-chip,
+body.theme-dark .calendar-day-card.proper-grid,
+body.theme-dark .calendar-day-card.proper-grid.muted,
+body.theme-dark .segmented-control,
+body.theme-dark .nav-button,
+body.theme-dark .pill,
+body.theme-dark .back-link,
+body.theme-dark .top-badge,
+body.theme-dark .meta-chip,
+body.theme-dark .tab-button,
+body.theme-dark .hero-card,
+body.theme-dark .info-card,
+body.theme-dark .event-launch-card,
+body.theme-dark .map-card,
+body.theme-dark .item-card,
+body.theme-dark .location-card,
+body.theme-dark .vendor-card,
+body.theme-dark .schedule-card,
+body.theme-dark .modal-card,
+body.theme-dark .proper-calendar-shell {
+  color: var(--text);
+}
+
+body.theme-dark .segmented-control,
+body.theme-dark .nav-button,
+body.theme-dark .theme-toggle,
+body.theme-dark .filter-chip,
+body.theme-dark .day-chip,
+body.theme-dark .resource-link,
+body.theme-dark .weekday-pill,
+body.theme-dark .tab-button,
+body.theme-dark .hero-card,
+body.theme-dark .info-card,
+body.theme-dark .event-launch-card,
+body.theme-dark .map-card,
+body.theme-dark .item-card,
+body.theme-dark .location-card,
+body.theme-dark .vendor-card,
+body.theme-dark .schedule-card,
+body.theme-dark .modal-card,
+body.theme-dark .proper-calendar-shell,
+body.theme-dark .agenda-day-card,
+body.theme-dark .calendar-day-card {
+  background: var(--panel);
+  border-color: var(--border);
+  box-shadow: var(--shadow);
+}
+
+body.theme-dark .calendar-title,
+body.theme-dark .eyebrow,
+body.theme-dark .subtle,
+body.theme-dark .calendar-empty,
+body.theme-dark .agenda-day-subtitle,
+body.theme-dark .agenda-day-count,
+body.theme-dark .detail-row,
+body.theme-dark .event-time,
+body.theme-dark .more-events-label,
+body.theme-dark .weekday-pill {
+  color: var(--muted);
+}
+
+body.theme-dark .view-button.active,
+body.theme-dark .tab-button.active,
+body.theme-dark .day-chip.active,
+body.theme-dark .filter-chip.active {
+  background: linear-gradient(180deg, rgba(81, 109, 163, 0.65) 0%, rgba(61, 88, 141, 0.8) 100%);
+  color: var(--text);
+}
+
+body.theme-dark .calendar-day-number,
+body.theme-dark .schedule-card button,
+body.theme-dark .vendor-card button,
+body.theme-dark .location-card button,
+body.theme-dark .item-card button,
+body.theme-dark .mini-badge,
+body.theme-dark .legend-pill,
+body.theme-dark .sponsor-pill,
+body.theme-dark .flyer-number {
+  background: linear-gradient(180deg, rgba(55, 77, 119, 0.8) 0%, rgba(42, 61, 96, 0.95) 100%);
+  color: var(--text);
+}
+
+body.theme-dark .theme-toggle-track {
+  background: linear-gradient(180deg, rgba(55, 77, 119, 0.85) 0%, rgba(42, 61, 96, 0.98) 100%);
+}
+
+body.theme-dark .theme-toggle[aria-pressed="true"] .theme-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.theme-toggle[aria-pressed="true"] .theme-toggle-thumb {
+  transform: translateX(20px);
+}
+
+@media (max-width: 700px) {
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .theme-toggle-label {
+    display: none;
+  }
+}

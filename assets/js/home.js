@@ -23,8 +23,44 @@ const homeEl = {
   next: document.getElementById('next-period'),
   viewButtons: Array.from(document.querySelectorAll('.view-button')),
   summaryCards: document.getElementById('event-summary-cards'),
-  filters: document.getElementById('calendar-filters')
+  filters: document.getElementById('calendar-filters'),
+  themeToggle: document.getElementById('theme-toggle')
 };
+
+const THEME_STORAGE_KEY = 'mp-community-events-theme';
+
+
+function getStoredTheme() {
+  try {
+    return localStorage.getItem(THEME_STORAGE_KEY) || 'light';
+  } catch (error) {
+    return 'light';
+  }
+}
+
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+  document.body.classList.toggle('theme-dark', isDark);
+  if (homeEl.themeToggle) {
+    homeEl.themeToggle.setAttribute('aria-pressed', String(isDark));
+    const label = homeEl.themeToggle.querySelector('.theme-toggle-label');
+    if (label) label.textContent = isDark ? 'Light mode' : 'Dark mode';
+  }
+}
+
+function initThemeToggle() {
+  applyTheme(getStoredTheme());
+  if (!homeEl.themeToggle) return;
+  homeEl.themeToggle.addEventListener('click', () => {
+    const nextTheme = document.body.classList.contains('theme-dark') ? 'light' : 'dark';
+    applyTheme(nextTheme);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    } catch (error) {
+      console.warn('Theme preference could not be saved.', error);
+    }
+  });
+}
 
 function startOfDay(date) {
   const copy = new Date(date);
@@ -430,5 +466,6 @@ function initHomeControls() {
   });
 }
 
+initThemeToggle();
 initHomeControls();
 loadData();
