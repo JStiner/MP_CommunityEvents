@@ -10,19 +10,35 @@
   <main class="phone-shell home-shell wide-shell">
     <header class="hero-card home-hero">
       <div class="hero-topline hero-topline-home">
-        <div>
-          <p class="eyebrow">Community Events Demo</p>
-          <h1>Community Calendar</h1>
+        <div class="header">
+          <div class="header-left">
+            <p class="eyebrow">Community Events Demo</p>
+            <h1>Community Calendar</h1>
+          </div>
+
+          <div class="header-actions">
+            <span class="pill">Static Demo Data</span>
+
+            <button
+              id="theme-toggle"
+              class="theme-toggle"
+              type="button"
+              aria-pressed="false"
+              aria-label="Toggle dark mode"
+            >
+              <span class="theme-toggle-label">Dark mode</span>
+              <span class="theme-toggle-track">
+                <span class="theme-toggle-thumb"></span>
+              </span>
+            </button>
+          </div>
         </div>
-        <div class="header-actions">
-          <span class="pill">Static Demo Data</span>
-          <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark mode">
-            <span class="theme-toggle-label">Dark mode</span>
-            <span class="theme-toggle-track"><span class="theme-toggle-thumb"></span></span>
-          </button>
-        </div>
+
+        <p class="subtle">
+          This is a Demo and not intended to be accurate or reliable infomation
+        </p>
       </div>
-      <p class="subtle">Month view now uses a proper calendar grid. You can also filter which event buckets are visible.</p>
+    </header>
 
       <div id="calendar-filters" class="filter-chip-row"></div>
 

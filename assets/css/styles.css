@@ -577,6 +577,7 @@ body.modal-open {
   gap: 8px;
 }
 
+
 .calendar-event-chip {
   display: flex;
   flex-direction: column;
@@ -587,6 +588,54 @@ body.modal-open {
   color: var(--text);
   background: linear-gradient(180deg, #ffffff 0%, #edf3ff 100%);
   border: 1px solid rgba(145, 164, 190, 0.25);
+}
+
+/* Month view: compact day markers instead of full event chips */
+.month-grid .calendar-day-card.proper-grid {
+  min-height: 168px;
+  padding: 10px 10px 8px;
+  cursor: pointer;
+}
+
+.month-grid .calendar-day-card.proper-grid .calendar-event-chip {
+  pointer-events: none;
+}
+
+.month-grid .calendar-day-card.proper-grid .calendar-day-header {
+  margin-bottom: 8px;
+}
+
+.month-grid .calendar-day-card.proper-grid .calendar-day-events {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+  align-content: flex-start;
+  min-height: 20px;
+}
+
+.month-grid .calendar-day-card.proper-grid .calendar-event-chip {
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  padding: 0;
+  border-radius: 999px;
+  border: 0;
+  box-shadow: none;
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.month-grid .calendar-day-card.proper-grid .calendar-event-chip .event-time,
+.month-grid .calendar-day-card.proper-grid .calendar-event-chip .event-text,
+.month-grid .calendar-day-card.proper-grid .calendar-event-chip .event-meta {
+  display: none;
+}
+
+.month-grid .calendar-day-card.proper-grid .calendar-empty {
+  min-height: 10px;
+  padding: 0;
 }
 
 .event-time {
@@ -870,7 +919,7 @@ body.soft-light {
 }
 
 .wide-shell {
-  max-width: 1320px;
+  max-width: 1520px;
 }
 
 .filter-chip-row {
@@ -1885,12 +1934,50 @@ body.soft-light {
   margin-bottom: 0;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-left {
+  min-width: 0;
+}
+
 .header-actions {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
+}
+
+.home-content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.bucket-rail {
+  min-width: 0;
+}
+
+.bucket-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bucket-stack .event-launch-card {
+  min-width: 0;
+}
+
+.bucket-stack .event-launch-card h2 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
 }
 
 .theme-toggle {
@@ -1932,51 +2019,44 @@ body.soft-light {
   transition: transform 0.2s ease;
 }
 
-.home-content-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  align-items: start;
-}
-
-.bucket-rail {
-  min-width: 0;
-}
-
-.bucket-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.bucket-stack .event-launch-card {
-  min-width: 0;
-}
-
-.bucket-stack .event-launch-card h2 {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-}
-
 @media (min-width: 1080px) {
   .home-content-grid {
-    grid-template-columns: minmax(0, 1fr) 320px;
-    gap: 18px;
+    grid-template-columns: minmax(0, 1.45fr) 300px;
+    gap: 20px;
   }
 
   .bucket-rail {
     position: sticky;
     top: 18px;
+    align-self: start;
   }
 
   .bucket-stack {
-    max-height: calc(100vh - 180px);
+    max-height: calc(100vh - 160px);
     overflow: auto;
     padding-right: 4px;
   }
 }
 
+.theme-toggle[aria-pressed="true"] .theme-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.calendar-day-card.proper-grid.selected {
+  box-shadow: inset 0 0 0 2px rgba(79, 103, 168, 0.65);
+  background: linear-gradient(180deg, #ffffff 0%, #f2f6ff 100%);
+}
+
+.expanded-day-row {
+  grid-column: 1 / -1;
+}
+
 /* Dark mode */
+body.theme-dark .calendar-day-card.proper-grid.selected {
+  background: linear-gradient(180deg, rgba(32, 46, 74, 0.96) 0%, rgba(24, 36, 60, 0.98) 100%);
+  box-shadow: inset 0 0 0 2px rgba(123, 154, 223, 0.72);
+}
+
 body.theme-dark {
   --bg: #0f1724;
   --panel: rgba(17, 25, 40, 0.84);
@@ -2097,13 +2177,6 @@ body.theme-dark .theme-toggle-track {
   background: linear-gradient(180deg, rgba(55, 77, 119, 0.85) 0%, rgba(42, 61, 96, 0.98) 100%);
 }
 
-body.theme-dark .theme-toggle[aria-pressed="true"] .theme-toggle-thumb {
-  transform: translateX(20px);
-}
-
-.theme-toggle[aria-pressed="true"] .theme-toggle-thumb {
-  transform: translateX(20px);
-}
 
 @media (max-width: 700px) {
   .header-actions {

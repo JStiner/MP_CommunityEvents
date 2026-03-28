@@ -12,7 +12,8 @@ const homeState = {
   anchorDate: new Date(),
   events: [],
   datasets: [],
-  selectedFilters: new Set(['All'])
+  selectedFilters: new Set(['All']),
+  selectedDate: startOfDay(new Date())
 };
 
 const homeEl = {
@@ -67,6 +68,7 @@ function startOfDay(date) {
   copy.setHours(0, 0, 0, 0);
   return copy;
 }
+
 
 function parseEventDate(dateStr, timeStr) {
   const iso = `${dateStr}T${convertTimeTo24(timeStr)}:00`;
@@ -164,6 +166,36 @@ async function loadSourceData(source) {
   );
 
   return Object.assign({}, data, Object.fromEntries(entries));
+}
+
+function createExpandedDayRow(date, events) {
+  const wrapper = document.createElement('section');
+  wrapper.className = 'agenda-day-card expanded-day-row';
+
+  wrapper.innerHTML = `
+    <div class="agenda-day-header">
+      <div>
+        <div class="agenda-day-title">${date.toLocaleDateString(undefined, { weekday: 'long' })}</div>
+        <div class="agenda-day-subtitle">${date.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+      </div>
+      <div class="agenda-day-count">${events.length} event${events.length === 1 ? '' : 's'}</div>
+    </div>
+  `;
+
+  const list = document.createElement('div');
+  list.className = 'agenda-events';
+
+  if (!events.length) {
+    const empty = document.createElement('div');
+    empty.className = 'calendar-empty';
+    empty.textContent = 'No events scheduled.';
+    list.appendChild(empty);
+  } else {
+    events.forEach(event => list.appendChild(createEventChip(event)));
+  }
+
+  wrapper.appendChild(list);
+  return wrapper;
 }
 
 async function loadData() {
@@ -291,6 +323,13 @@ function createEventChip(event) {
   return a;
 }
 
+function createMonthDot(event) {
+  const dot = document.createElement('span');
+  dot.className = `calendar-event-chip bucket-${event.bucket.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  dot.setAttribute('aria-hidden', 'true');
+  return dot;
+}
+
 function renderMonthView() {
   homeEl.grid.className = 'calendar-grid month-grid';
   homeEl.grid.innerHTML = '';
@@ -302,40 +341,70 @@ function renderMonthView() {
   const end = getEndOfWeek(lastOfMonth);
 
   const events = periodEvents(start, end);
+  const selectedDate = homeState.selectedDate ? startOfDay(homeState.selectedDate) : null;
 
+  const dayCells = [];
   for (let cursor = new Date(start); cursor <= end; cursor = addDays(cursor, 1)) {
-    const currentDate = new Date(cursor);
-    const isMuted = currentDate.getMonth() !== anchor.getMonth();
-    const isToday = isSameDate(currentDate, new Date());
-    const dayCell = document.createElement('article');
-    dayCell.className = `calendar-day-card proper-grid ${isMuted ? 'muted' : ''} ${isToday ? 'today' : ''}`;
+    dayCells.push(new Date(cursor));
+  }
 
-    const header = document.createElement('div');
-    header.className = 'calendar-day-header';
-    header.innerHTML = `<span class="calendar-day-number">${currentDate.getDate()}</span>`;
-    dayCell.appendChild(header);
+  for (let i = 0; i < dayCells.length; i += 7) {
+    const weekDays = dayCells.slice(i, i + 7);
 
-    const list = document.createElement('div');
-    list.className = 'calendar-day-events';
+    weekDays.forEach(currentDate => {
+      const isMuted = currentDate.getMonth() !== anchor.getMonth();
+      const isToday = isSameDate(currentDate, new Date());
+      const isSelected = selectedDate && isSameDate(currentDate, selectedDate);
 
-    const dayEvents = events.filter(event => isSameDate(new Date(`${event.date}T12:00:00`), currentDate));
-    if (!dayEvents.length) {
-      const empty = document.createElement('div');
-      empty.className = 'calendar-empty';
-      empty.textContent = '';
-      list.appendChild(empty);
-    } else {
-      dayEvents.slice(0, 4).forEach(event => list.appendChild(createEventChip(event)));
-      if (dayEvents.length > 4) {
-        const more = document.createElement('div');
-        more.className = 'more-events-label';
-        more.textContent = `+${dayEvents.length - 4} more`;
-        list.appendChild(more);
+      const dayCell = document.createElement('article');
+      dayCell.className = `calendar-day-card proper-grid ${isMuted ? 'muted' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}`;
+
+      const header = document.createElement('div');
+      header.className = 'calendar-day-header';
+      header.innerHTML = `<span class="calendar-day-number">${currentDate.getDate()}</span>`;
+      dayCell.appendChild(header);
+
+      const list = document.createElement('div');
+      list.className = 'calendar-day-events';
+
+      const dayEvents = events.filter(event =>
+        isSameDate(new Date(`${event.date}T12:00:00`), currentDate)
+      );
+
+      if (!dayEvents.length) {
+        const empty = document.createElement('div');
+        empty.className = 'calendar-empty';
+        empty.textContent = '';
+        list.appendChild(empty);
+      } else {
+        dayEvents.slice(0, 4).forEach(event => list.appendChild(createMonthDot(event)));
+        if (dayEvents.length > 4) {
+          const more = document.createElement('div');
+          more.className = 'more-events-label';
+          more.textContent = `+${dayEvents.length - 4} more`;
+          list.appendChild(more);
+        }
       }
-    }
 
-    dayCell.appendChild(list);
-    homeEl.grid.appendChild(dayCell);
+      dayCell.appendChild(list);
+
+      dayCell.addEventListener('click', () => {
+        homeState.selectedDate = startOfDay(currentDate);
+        renderHome();
+      });
+
+      homeEl.grid.appendChild(dayCell);
+    });
+
+    const weekHasSelectedDay = selectedDate && weekDays.some(day => isSameDate(day, selectedDate));
+    if (weekHasSelectedDay) {
+      const selectedEvents = events.filter(event =>
+        isSameDate(new Date(`${event.date}T12:00:00`), selectedDate)
+      );
+      const expandedRow = createExpandedDayRow(selectedDate, selectedEvents);
+      expandedRow.style.gridColumn = '1 / -1';
+      homeEl.grid.appendChild(expandedRow);
+    }
   }
 }
 
