@@ -24,8 +24,49 @@ const el = {
   modalKicker: document.getElementById('modal-kicker'),
   modalTitle: document.getElementById('modal-title'),
   modalContent: document.getElementById('modal-content'),
-  closeModal: document.getElementById('close-modal')
+  closeModal: document.getElementById('close-modal'),
+  themeToggle: document.getElementById('theme-toggle')
 };
+
+const THEME_STORAGE_KEY = 'mp-community-events-theme';
+
+function getStoredTheme() {
+  try {
+    return localStorage.getItem(THEME_STORAGE_KEY) || 'light';
+  } catch (error) {
+    return 'light';
+  }
+}
+
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+  document.body.classList.toggle('theme-dark', isDark);
+
+  if (el.themeToggle) {
+    el.themeToggle.setAttribute('aria-pressed', String(isDark));
+    const label = el.themeToggle.querySelector('.theme-toggle-label');
+    if (label) {
+      label.textContent = isDark ? 'Light mode' : 'Dark mode';
+    }
+  }
+}
+
+function initThemeToggle() {
+  applyTheme(getStoredTheme());
+
+  if (!el.themeToggle) return;
+
+  el.themeToggle.addEventListener('click', () => {
+    const nextTheme = document.body.classList.contains('theme-dark') ? 'light' : 'dark';
+    applyTheme(nextTheme);
+
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    } catch (error) {
+      console.warn('Theme preference could not be saved.', error);
+    }
+  });
+}
 
 function formatTimeRange(start, end) {
   const startText = String(start || '').trim();
@@ -1121,8 +1162,8 @@ async function init() {
   if (!eventFile) return;
 
   try {
+    initThemeToggle();
     const data = await loadEventData(eventFile);
-    state.eventData = data;
 
     renderHeader(data);
     renderDayFilter(data);

@@ -1015,9 +1015,17 @@ body.soft-light {
   background: var(--color-community);
 }
 
+.filter-chip[data-filter="Community"] {
+  border-color: var(--color-community);
+}
+
 .calendar-event-chip.bucket-school,
 .filter-chip[data-filter="School"].active {
   background: var(--color-school);
+}
+
+.filter-chip[data-filter="School"] {
+  border-color: var(--color-school);
 }
 
 .calendar-event-chip.bucket-town-services,
@@ -1025,9 +1033,17 @@ body.soft-light {
   background: var(--color-town);
 }
 
+.filter-chip[data-filter="Town Services"] {
+  border-color: var(--color-town);
+}
+
 .calendar-event-chip.bucket-fall-fest,
 .filter-chip[data-filter="Fall Fest"].active {
   background: var(--color-fallfest);
+}
+
+.filter-chip[data-filter="Fall Fest"] {
+  border-color: var(--color-fallfest);
 }
 
 .calendar-event-chip.bucket-2nd-fridays,
@@ -1035,9 +1051,25 @@ body.soft-light {
   background: var(--color-secondfriday);
 }
 
+.filter-chip[data-filter="2nd Fridays"] {
+  border-color: var(--color-secondfriday);
+}
+
 .calendar-event-chip.bucket-covh,
 .filter-chip[data-filter="COVH"].active {
   background: var(--color-covh);
+}
+.filter-chip[data-filter="COVH"] {
+  border-color: var(--color-covh);
+}
+
+.filter-chip[data-filter="Community"],
+.filter-chip[data-filter="School"],
+.filter-chip[data-filter="Town Services"],
+.filter-chip[data-filter="Fall Fest"],
+.filter-chip[data-filter="2nd Fridays"],
+.filter-chip[data-filter="COVH"] {
+  border-width: 2px;
 }
 
 @media (max-width: 700px) {
