@@ -288,6 +288,99 @@ function getFilterMode(data) {
   return uniqueDates.length > 31 ? 'month' : 'day';
 }
 
+function todayYmd() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function getEventCode(data) {
+  return data?._meta?.code || '';
+}
+
+function getCurrentOrNextDayId(data) {
+  const days = data.days || [];
+  if (!days.length) return null;
+
+  const today = todayYmd();
+
+  // current exact day
+  const current = days.find(day => day.date === today);
+  if (current) return current.id;
+
+  // next future day
+  const upcoming = days.find(day => day.date >= today);
+  if (upcoming) return upcoming.id;
+
+  // fallback to first day
+  return days[0].id;
+}
+
+function getNextAvailableDayIdFromSchedule(data) {
+  const schedule = (data.schedule || []).slice();
+  if (!schedule.length) return null;
+
+  const today = todayYmd();
+
+  const uniqueDates = Array.from(
+    new Set(schedule.map(item => item.date).filter(Boolean))
+  ).sort();
+
+  // first current or future schedule date
+  const nextDate = uniqueDates.find(date => date >= today);
+
+  if (nextDate) {
+    const matchingDay = (data.days || []).find(day => day.date === nextDate);
+    return matchingDay?.id || nextDate;
+  }
+
+  // fallback to last available date/day if all have passed
+  const lastDate = uniqueDates[uniqueDates.length - 1];
+  const matchingDay = (data.days || []).find(day => day.date === lastDate);
+  return matchingDay?.id || lastDate;
+}
+
+function getCurrentMonthId() {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function getBestDefaultSelection(data) {
+  const code = getEventCode(data);
+  const filterMode = getFilterMode(data);
+
+  // Month-driven pages
+  if (code === 'COMMUNITY' || code === 'SCHOOL' || code === 'TOWN') {
+    return getCurrentMonthId();
+  }
+
+  // Fall Fest: active/current day, then next day, then first day
+  if (code === 'FALLFEST') {
+    return getCurrentOrNextDayId(data);
+  }
+
+  // 2nd Fridays: next available event date, else last available
+  if (code === '2NDFRIDAY' || code === 'SECOND_FRIDAYS') {
+    return getNextAvailableDayIdFromSchedule(data);
+  }
+
+  // COVH: leave current behavior
+  if (code === 'COVH') {
+    if (filterMode === 'month') {
+      const months = getMonthOptions(data);
+      return months[0]?.id || 'all';
+    }
+    return data.days?.[0]?.id || null;
+  }
+
+  // Generic fallback
+  if (filterMode === 'month') {
+    const currentMonth = getCurrentMonthId();
+    const monthOptions = getMonthOptions(data);
+    const hasCurrent = monthOptions.some(month => month.id === currentMonth);
+    return hasCurrent ? currentMonth : (monthOptions[0]?.id || 'all');
+  }
+
+  return getCurrentOrNextDayId(data) || data.days?.[0]?.id || null;
+}
 
 function renderDayFilter(data) {
   if (!el.dayFilter) return;
@@ -297,11 +390,14 @@ function renderDayFilter(data) {
   state.filterMode = getFilterMode(data);
 
   if (state.filterMode === 'month') {
-    const monthOptions = getMonthOptions(data);
-    const today = new Date();
-    const defaultMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-    const fallbackMonth = monthOptions[0]?.id || defaultMonth;
-    state.selectedDate = state.selectedDate || 'all';
+	const monthOptions = getMonthOptions(data);
+	const defaultSelection = getBestDefaultSelection(data);
+	state.selectedDate = state.selectedDate || defaultSelection || 'all';
+	
+	const validMonthIds = new Set(monthOptions.map(month => month.id));
+if (state.selectedDate !== 'all' && !validMonthIds.has(state.selectedDate)) {
+  state.selectedDate = monthOptions[0]?.id || 'all';
+}
 
     const allChip = document.createElement('button');
     allChip.type = 'button';
@@ -330,7 +426,7 @@ function renderDayFilter(data) {
     return;
   }
 
-  state.selectedDate = state.selectedDate || data.days[0].id;
+	state.selectedDate = state.selectedDate || getBestDefaultSelection(data) || data.days[0]?.id || null;
 
   data.days.forEach(day => {
     const chip = document.createElement('button');
