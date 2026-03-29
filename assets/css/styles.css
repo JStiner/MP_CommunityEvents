@@ -39,12 +39,17 @@ body {
 }
 
 .phone-shell {
-  width: min(100%, 460px);
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
+
+@media (min-width: 700px) {
+  .phone-shell {
+    width: 100%;
+  }
 
 .home-shell {
   padding-bottom: 24px;
@@ -397,11 +402,6 @@ body.modal-open {
   color: var(--muted);
   padding: 24px;
 }
-
-@media (min-width: 700px) {
-  .phone-shell {
-    width: min(100%, 840px);
-  }
 
   .grid-cards {
     display: grid;
@@ -919,7 +919,7 @@ body.soft-light {
 }
 
 .wide-shell {
-  max-width: 1520px;
+  max-width: 100%;
 }
 
 .filter-chip-row {
