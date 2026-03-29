@@ -2008,7 +2008,7 @@ body.theme-dark .calendar-event-chip.bucket-covh {
    ========================= */
 @media (max-width: 700px) {
   html {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   .page-shell {
