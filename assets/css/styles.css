@@ -1972,6 +1972,37 @@ body.theme-dark .filter-chip {
   border-width: 2px;
 }
 
+/* Dark mode: preserve bucket colors on calendar event chips / dots */
+body.theme-dark .calendar-event-chip.bucket-community {
+  background: var(--color-community);
+  border-color: var(--color-community);
+}
+
+body.theme-dark .calendar-event-chip.bucket-school {
+  background: var(--color-school);
+  border-color: var(--color-school);
+}
+
+body.theme-dark .calendar-event-chip.bucket-town-services {
+  background: var(--color-town);
+  border-color: var(--color-town);
+}
+
+body.theme-dark .calendar-event-chip.bucket-fall-fest {
+  background: var(--color-fallfest);
+  border-color: var(--color-fallfest);
+}
+
+body.theme-dark .calendar-event-chip.bucket-2nd-fridays {
+  background: var(--color-secondfriday);
+  border-color: var(--color-secondfriday);
+}
+
+body.theme-dark .calendar-event-chip.bucket-covh {
+  background: var(--color-covh);
+  border-color: var(--color-covh);
+}
+
 /* =========================
    Mobile
    ========================= */
