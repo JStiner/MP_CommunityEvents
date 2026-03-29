@@ -795,10 +795,6 @@ function renderCovhPageOne(flyer) {
   const leftEntries = allEntries.filter(entry => Number.parseInt(entry.number, 10) <= 16);
   const rightEntries = allEntries.filter(entry => Number.parseInt(entry.number, 10) >= 17);
   const regionalBlocks = flyer.sections?.regional?.blocks || [];
-  const bagNotice = escapeHtml(
-    flyer.callouts?.bagNotice ||
-    'Visit a location with the bag symbol and receive a reusable shopping bag with any donation to the Christmas on Vinegar Hill event while supplies last.'
-  );
 
   return `
     <article class="flyer-page covh-pamphlet-page covh-page-one" data-page="1">
@@ -858,10 +854,18 @@ function renderCovhPageTwo(flyer) {
   return `
     <article class="flyer-page covh-pamphlet-page covh-page-two" data-page="2">
       <div class="flyer-page-inner covh-page-inner">
-        <header class="covh-banner covh-banner-secondary">
-          <div class="covh-banner-date">${escapeHtml(flyer.document?.subtitle || '')}</div>
-          <div class="covh-banner-title">Christmas on Vinegar Hill</div>
-        </header>
+		<header class="covh-banner covh-banner-overlay covh-banner-page-two">
+		  ${flyer.assets?.headerGraphic ? `
+			<div class="covh-banner-strip covh-banner-strip-overlay">
+			  <img src="${escapeHtml(flyer.assets.headerGraphic)}" alt="" class="covh-banner-strip-image covh-banner-strip-image-wide" loading="lazy" />
+			</div>
+		  ` : ''}
+
+		  <div class="covh-banner-copy covh-banner-copy-overlay">
+			<div class="covh-banner-date">${escapeHtml(flyer.document?.subtitle || '')}</div>
+			<div class="covh-banner-title">Christmas on Vinegar Hill</div>
+		  </div>
+		</header>
 
         <div class="covh-map-layout">
           <div class="covh-map-main-card covh-map-panel">
@@ -944,7 +948,7 @@ function flyerActionsMarkup() {
     <div class="flyer-toolbar">
       <button type="button" class="flyer-action" data-flyer-action="share">Share flyer</button>
       <button type="button" class="flyer-action" data-flyer-action="print">Print</button>
-      <button type="button" class="flyer-action" data-flyer-action="pdf">Download PDF</button>
+      <button type="button" class="flyer-action" data-flyer-action="pdf">Save as PDF</button>
     </div>
   `;
 }
@@ -1100,10 +1104,12 @@ function buildFlyerPrintDocument(flyer) {
 }
 
 async function shareFlyerLink() {
+	const shareUrl = `${window.location.origin}${window.location.pathname}#flyer-panel`;
+
   const shareData = {
     title: `${state.eventData?.eventName || 'Event'} Flyer`,
     text: 'Printable event flyer',
-    url: window.location.href
+    url: shareUrl
   };
 
   if (navigator.share) {
@@ -1111,7 +1117,7 @@ async function shareFlyerLink() {
     return;
   }
 
-  await navigator.clipboard.writeText(window.location.href);
+  await navigator.clipboard.writeText(shareUrl);
   alert('Flyer link copied.');
 }
 
@@ -1125,18 +1131,26 @@ function openFlyerPrintView(mode = 'print') {
     return;
   }
 
+  const html = buildFlyerPrintDocument(flyer);
+
   printWindow.document.open();
-  printWindow.document.write(buildFlyerPrintDocument(flyer));
+  printWindow.document.write(html);
   printWindow.document.close();
 
   const runPrint = () => {
     printWindow.focus();
-    window.setTimeout(() => {
-      printWindow.print();
-    }, mode === 'pdf' ? 500 : 250);
+
+    setTimeout(() => {
+      try {
+        printWindow.print();
+      } catch (error) {
+        console.error('Print failed:', error);
+        alert('Print dialog could not be opened.');
+      }
+    }, mode === 'pdf' ? 800 : 500);
   };
 
-  printWindow.onload = runPrint;
+  setTimeout(runPrint, 700);
 }
 
 function setupFlyerActions() {
