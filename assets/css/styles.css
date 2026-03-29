@@ -1823,7 +1823,7 @@ body.modal-open {
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 82%;
+  width: 72%;
   max-width: none;
   height: auto;
   display: block;
@@ -2571,7 +2571,7 @@ body.large-text .calendar-day-card {
   .covh-art-image {
     right: 0;
     bottom: 0;
-    width: 84%;
+    width: 72%;
   }
 
   .covh-footer-lines {
