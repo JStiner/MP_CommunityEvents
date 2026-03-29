@@ -2013,10 +2013,18 @@ body.theme-dark .calendar-event-chip.bucket-covh {
 
   .page-shell {
     padding: 8px;
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-x: hidden;
   }
 
   .phone-shell {
     gap: 12px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   .hero-card,
@@ -2141,44 +2149,81 @@ body.theme-dark .calendar-event-chip.bucket-covh {
     flex: 0 0 46px;
   }
 
-  /* Keep month grid wide on mobile for readability */
+  /* Force calendar to fit screen width on mobile */
   .proper-calendar-shell {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    overflow-x: visible;
+    width: 100%;
+    max-width: 100%;
     padding-bottom: 8px;
+  }
+
+  .calendar-shell,
+  .calendar-grid,
+  .calendar-weekdays,
+  .month-grid {
+    width: 100%;
+    max-width: 100%;
   }
 
   .calendar-weekdays.month-only,
   .month-grid {
-    min-width: 840px;
+    min-width: 0;
+  }
+
+  .calendar-weekdays {
+    gap: 4px;
+  }
+
+  .weekday-pill {
+    min-width: 0;
+    padding: 8px 2px;
+    font-size: 0.68rem;
+    border-radius: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .month-grid {
-    grid-template-columns: repeat(7, minmax(120px, 1fr));
+    grid-template-columns: repeat(7, minmax(0, 1fr));
   }
 
   .calendar-day-card.proper-grid {
-    min-height: 130px;
-    padding: 12px 10px;
+    min-width: 0;
+    min-height: 102px;
+    padding: 8px 4px 6px;
+  }
+
+  .calendar-day-card.proper-grid .calendar-day-header {
+    margin-bottom: 6px;
   }
 
   .calendar-day-card.proper-grid .calendar-day-number,
   .calendar-day-number {
-    width: 36px;
-    height: 36px;
-    font-size: 1.05rem;
+    width: 28px;
+    height: 28px;
+    font-size: 0.88rem;
     font-weight: 800;
   }
 
+  .calendar-day-label {
+    font-size: 0.68rem;
+  }
+
   .month-grid .calendar-day-card.proper-grid .calendar-day-events {
-    gap: 7px;
-    min-height: 28px;
+    gap: 5px;
+    min-height: 18px;
   }
 
   .month-grid .calendar-day-card.proper-grid .calendar-event-chip {
-    width: 13px;
-    height: 13px;
-    min-width: 13px;
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+  }
+
+  .more-events-label {
+    font-size: 0.64rem;
+    padding: 0;
   }
 
   .agenda-day-card,
@@ -2236,6 +2281,15 @@ body.theme-dark .calendar-event-chip.bucket-covh {
 
   .modal-content {
     padding: 14px 18px 18px;
+  }
+
+  /* Keep maps/flyers allowed to size naturally */
+  .map-surface,
+  .covh-map-panel,
+  .flyer-page,
+  .flyer-preview-shell,
+  .covh-pamphlet-page {
+    overflow-x: visible;
   }
 
   .map-hotspot {
