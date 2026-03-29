@@ -730,8 +730,17 @@ function renderCovhBadgeKey(flyer) {
   `;
 }
 
-function renderCovhListItem(entry) {
-  const badges = (entry.badges || []).map(b => `<span class="covh-inline-badge">${escapeHtml(b)}</span>`).join(' ');
+function renderCovhListItem(entry, flyer) {
+  const badges = (entry.badges || [])
+    .map(b => `<span class="covh-inline-badge">${escapeHtml(b)}</span>`)
+    .join(' ');
+
+  const bagIcon = entry.bagLocation && flyer?.assets?.bagIcon
+    ? `<img src="${escapeHtml(flyer.assets.bagIcon)}" alt="Bag location" class="covh-bag-icon covh-inline-bag-icon" loading="lazy" />`
+    : '';
+
+  const metaIcons = `${badges}${badges && bagIcon ? ' ' : ''}${bagIcon}`;
+
   return `
     <article class="covh-list-item">
       <div class="covh-item-head">
@@ -741,21 +750,36 @@ function renderCovhListItem(entry) {
         </div>
         <div class="covh-item-hours">${escapeHtml(entry.hours || 'TBD')}</div>
       </div>
-      <div class="covh-item-meta">${badges ? `<span class="covh-item-badges">${badges}</span>` : ''}<span>${escapeHtml(entry.address || '')}</span></div>
+      <div class="covh-item-meta">
+        ${metaIcons ? `<span class="covh-item-badges">${metaIcons}</span>` : ''}
+        <span>${escapeHtml(entry.address || '')}</span>
+      </div>
       <p>${escapeHtml(entry.description || '')}</p>
     </article>
   `;
 }
 
-function renderCovhRegionalItem(entry) {
-  const badges = (entry.badges || []).map(b => `<span class="covh-inline-badge">${escapeHtml(b)}</span>`).join(' ');
+function renderCovhRegionalItem(entry, flyer) {
+  const badges = (entry.badges || [])
+    .map(b => `<span class="covh-inline-badge">${escapeHtml(b)}</span>`)
+    .join(' ');
+
+  const bagIcon = entry.bagLocation && flyer?.assets?.bagIcon
+    ? `<img src="${escapeHtml(flyer.assets.bagIcon)}" alt="Bag location" class="covh-bag-icon covh-inline-bag-icon" loading="lazy" />`
+    : '';
+
+  const metaIcons = `${badges}${badges && bagIcon ? ' ' : ''}${bagIcon}`;
+
   return `
     <div class="covh-regional-item">
       <div class="covh-regional-head">
         <span class="covh-regional-name">${escapeHtml(entry.number)} ${escapeHtml(entry.name)}</span>
         <span class="covh-regional-hours">${escapeHtml(entry.hours || 'TBD')}</span>
       </div>
-      <div class="covh-regional-meta">${badges ? `<span class="covh-item-badges">${badges}</span>` : ''}<span>${escapeHtml(entry.address || '')}</span></div>
+      <div class="covh-regional-meta">
+        ${metaIcons ? `<span class="covh-item-badges">${metaIcons}</span>` : ''}
+        <span>${escapeHtml(entry.address || '')}</span>
+      </div>
       <p>${escapeHtml(entry.description || '')}</p>
     </div>
   `;
@@ -771,19 +795,30 @@ function renderCovhPageOne(flyer) {
   const leftEntries = allEntries.filter(entry => Number.parseInt(entry.number, 10) <= 16);
   const rightEntries = allEntries.filter(entry => Number.parseInt(entry.number, 10) >= 17);
   const regionalBlocks = flyer.sections?.regional?.blocks || [];
+  const bagNotice = escapeHtml(
+    flyer.callouts?.bagNotice ||
+    'Visit a location with the bag symbol and receive a reusable shopping bag with any donation to the Christmas on Vinegar Hill event while supplies last.'
+  );
 
   return `
     <article class="flyer-page covh-pamphlet-page covh-page-one" data-page="1">
       <div class="flyer-page-inner covh-page-inner">
-        <header class="covh-banner">
-          <div class="covh-banner-date">${escapeHtml(flyer.document?.subtitle || '')}</div>
-          <div class="covh-banner-title">Christmas on Vinegar Hill</div>
-          <div class="covh-banner-note">Look for the tree sign for participating locations</div>
+        <header class="covh-banner covh-banner-with-art">
+          <div class="covh-banner-copy">
+            <div class="covh-banner-date">${escapeHtml(flyer.document?.subtitle || '')}</div>
+            <div class="covh-banner-title">Christmas on Vinegar Hill</div>
+            <div class="covh-banner-note">${escapeHtml(flyer.callouts?.treeSign || 'Look for the tree sign for participating locations')}</div>
+          </div>
+          ${flyer.assets?.headerGraphic ? `
+            <div class="covh-banner-art">
+              <img src="${escapeHtml(flyer.assets.headerGraphic)}" alt="" class="covh-banner-art-image" loading="lazy" />
+            </div>
+          ` : ''}
         </header>
 
         <div class="covh-page-one-grid">
           <section class="covh-column covh-main-list">
-            ${leftEntries.map(renderCovhListItem).join('')}
+            ${leftEntries.map(entry => renderCovhListItem(entry, flyer)).join('')}
           </section>
 
           <section class="covh-column covh-middle-column">
@@ -791,18 +826,24 @@ function renderCovhPageOne(flyer) {
           </section>
 
           <section class="covh-column covh-side-list">
-            ${rightEntries.map(renderCovhListItem).join('')}
+            ${rightEntries.map(entry => renderCovhListItem(entry, flyer)).join('')}
 
             <div class="covh-regional-wrap">
               ${regionalBlocks.map(block => `
                 <section class="covh-regional-block">
                   <div class="covh-regional-title">${escapeHtml(block.title)} Location</div>
-                  ${(block.entries || []).map(renderCovhRegionalItem).join('')}
+                  ${(block.entries || []).map(entry => renderCovhRegionalItem(entry, flyer)).join('')}
                 </section>
               `).join('')}
             </div>
 
-            <div class="covh-bag-callout">Visit a location with the bag symbol and receive a reusable shopping bag with any donation to the Christmas on Vinegar Hill event while supplies last.</div>
+            <div class="covh-bag-callout">
+              <span>Visit a location with the</span>
+              ${flyer.assets?.bagIcon
+                ? `<img src="${escapeHtml(flyer.assets.bagIcon)}" alt="Bag symbol" class="covh-bag-icon covh-callout-bag-icon" loading="lazy" />`
+                : `<span class="covh-bag-text-symbol">bag symbol</span>`}
+              <span>symbol and receive a reusable shopping bag with any donation to the Christmas on Vinegar Hill event while supplies last.</span>
+            </div>
           </section>
         </div>
       </div>
@@ -858,14 +899,14 @@ function renderCovhPageTwo(flyer) {
         <div class="covh-footer-layout">
           <section class="covh-thanks-block">
             <div class="covh-script-heading">${escapeHtml(callouts.thankYouTitle || 'Thank You')}</div>
-            <p>${escapeHtml(callouts.thankYouText || '')}</p>
+            <p>${escapeHtml(callouts.thankYouText || 'Thank you for your patronage and to our Christmas on Vinegar Hill grant benefactors:')}</p>
             <div class="covh-benefactor-list">
               ${(callouts.benefactors || []).map(item => `<div>${escapeHtml(item)}</div>`).join('')}
             </div>
           </section>
 
           <section class="covh-qr-block">
-            <div class="covh-qr-title">Scan for Google Map of Event</div>
+            <div class="covh-qr-title">${escapeHtml(callouts.scanText || 'Scan for Google Map of Event')}</div>
             ${flyer.assets?.qrMap ? `<img src="${escapeHtml(flyer.assets.qrMap)}" alt="QR code for event map" class="covh-qr-image" loading="lazy" />` : ''}
           </section>
 
