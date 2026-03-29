@@ -1072,6 +1072,55 @@ body.soft-light {
   border-width: 2px;
 }
 
+.calendar-controls-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.calendar-controls-left {
+  justify-self: start;
+}
+
+.calendar-controls-center {
+  min-width: 0;
+  justify-self: center;
+}
+
+.calendar-controls-right {
+  justify-self: end;
+}
+
+.calendar-controls-center .filter-chip-row {
+  justify-content: center;
+}
+
+.calendar-controls-right .calendar-nav {
+  justify-content: flex-end;
+}
+
+@media (max-width: 1100px) {
+  .calendar-controls-row {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .calendar-controls-left,
+  .calendar-controls-center,
+  .calendar-controls-right {
+    justify-self: stretch;
+  }
+
+  .calendar-controls-center .filter-chip-row {
+    justify-content: flex-start;
+  }
+
+  .calendar-controls-right .calendar-nav {
+    justify-content: space-between;
+  }
+}
+
 @media (max-width: 700px) {
   .proper-calendar-shell {
     overflow-x: auto;

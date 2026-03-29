@@ -39,22 +39,27 @@
         </p>
       </div>
     </header>
+		<div class="calendar-controls-row">
+		  <div class="calendar-controls-left">
+			<div class="segmented-control">
+			  <button class="view-button active" data-view="month">Month</button>
+			  <button class="view-button" data-view="week">Week</button>
+			  <button class="view-button" data-view="day">Day</button>
+			</div>
+		  </div>
 
-      <div id="calendar-filters" class="filter-chip-row"></div>
+		  <div class="calendar-controls-center">
+			<div id="calendar-filters" class="filter-chip-row"></div>
+		  </div>
 
-      <div class="calendar-toolbar">
-        <div class="segmented-control" role="tablist" aria-label="Calendar view">
-          <button class="view-button active" data-view="month">Month</button>
-          <button class="view-button" data-view="week">Week</button>
-          <button class="view-button" data-view="day">Day</button>
-        </div>
-
-        <div class="calendar-nav">
-          <button id="prev-period" class="nav-button" aria-label="Previous period">←</button>
-          <div id="calendar-title" class="calendar-title">Loading...</div>
-          <button id="next-period" class="nav-button" aria-label="Next period">→</button>
-        </div>
-      </div>
+		  <div class="calendar-controls-right">
+			<div class="calendar-nav">
+			  <button id="prev-period" class="nav-button" type="button" aria-label="Previous period">←</button>
+			  <div id="calendar-title" class="calendar-title"></div>
+			  <button id="next-period" class="nav-button" type="button" aria-label="Next period">→</button>
+			</div>
+		  </div>
+		</div>
     </header>
 
     <div class="home-content-grid">
