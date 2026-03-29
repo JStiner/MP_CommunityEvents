@@ -1402,6 +1402,9 @@ body.modal-open {
 /* =========================
    COVH pamphlet flyer
    ========================= */
+/* =========================
+   COVH pamphlet flyer
+   ========================= */
 .covh-preview-shell {
   gap: 20px;
 }
@@ -1421,6 +1424,38 @@ body.modal-open {
   padding: 10px 0 16px;
   border-bottom: 2px solid #d8d8d8;
   margin-bottom: 18px;
+}
+
+.covh-banner-stacked {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: center;
+}
+
+.covh-banner-strip {
+  width: 100%;
+  margin: 0 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.covh-banner-strip-image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 86px;
+  object-fit: contain;
+}
+
+.covh-banner-copy {
+  min-width: 0;
+}
+
+.covh-banner-copy-centered {
+  text-align: center;
 }
 
 .covh-banner-date {
@@ -1526,6 +1561,14 @@ body.modal-open {
   font-size: 0.77rem;
 }
 
+.covh-item-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  line-height: 1;
+}
+
 .covh-list-item p,
 .covh-regional-item p,
 .covh-thanks-block p,
@@ -1590,12 +1633,40 @@ body.modal-open {
   color: #2d4d37;
 }
 
+.covh-bag-icon {
+  display: block;
+  object-fit: contain;
+}
+
+.covh-inline-bag-icon {
+  width: 11px;
+  height: 11px;
+  min-width: 11px;
+  flex: 0 0 11px;
+}
+
+.covh-callout-bag-icon {
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  flex: 0 0 12px;
+  margin: 0 2px;
+}
+
+.covh-bag-text-symbol {
+  font-weight: 700;
+}
+
 .covh-bag-callout {
   padding: 10px;
   background: #f6faf6;
   font-size: 0.77rem;
   line-height: 1.3;
   color: #31503a;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
 }
 
 .covh-map-layout {
@@ -1684,6 +1755,9 @@ body.modal-open {
 
 .covh-art-block {
   grid-area: art;
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
 }
 
 .covh-script-heading {
@@ -1692,19 +1766,16 @@ body.modal-open {
 }
 
 .covh-benefactor-list,
-.covh-sponsor-list,
-.covh-footer-lines {
+.covh-sponsor-list {
   margin-left: 0;
 }
 
 .covh-benefactor-list > div,
-.covh-sponsor-list > div,
-.covh-footer-lines > div {
+.covh-sponsor-list > div {
   padding: 2px 0;
 }
 
-.covh-qr-image,
-.covh-art-image {
+.covh-qr-image {
   max-width: 100%;
   height: auto;
   display: block;
@@ -1712,7 +1783,31 @@ body.modal-open {
 }
 
 .covh-art-image {
-  margin-bottom: 10px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 78%;
+  max-width: none;
+  height: auto;
+  display: block;
+  margin: 0;
+  object-fit: contain;
+  object-position: right bottom;
+}
+
+.covh-footer-lines {
+  position: absolute;
+  left: 12px;
+  bottom: 28px;
+  z-index: 2;
+  margin: 0;
+  max-width: 48%;
+  line-height: 1.35;
+  color: #303030;
+}
+
+.covh-footer-lines > div {
+  padding: 0 0 4px;
 }
 
 .covh-map-layout-tab {
@@ -1788,6 +1883,10 @@ body.modal-open {
 
   .covh-key-card {
     position: static;
+  }
+
+  .covh-banner-strip-image {
+    max-height: 74px;
   }
 }
 
@@ -2112,7 +2211,7 @@ body.large-text .calendar-day-card {
   .weekday-pill {
     min-width: 0;
     padding: 8px 2px;
-    font-size: 0.75 rem;
+    font-size: 0.75rem;
     border-radius: 12px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2137,12 +2236,12 @@ body.large-text .calendar-day-card {
   .calendar-day-number {
     width: 28px;
     height: 28px;
-    font-size: 1 rem;
+    font-size: 1rem;
     font-weight: 800;
   }
 
   .calendar-day-label {
-    font-size: 0.75 rem;
+    font-size: 0.75rem;
   }
 
   .month-grid .calendar-day-card.proper-grid .calendar-day-events {
@@ -2354,7 +2453,7 @@ body.large-text .calendar-day-card {
     display: none !important;
   }
 
-  .covh-pamphlet-page {
+   .covh-pamphlet-page {
     border: 0;
     box-shadow: none;
     border-radius: 0;
@@ -2369,6 +2468,22 @@ body.large-text .calendar-day-card {
   .covh-banner {
     padding-top: 0;
     margin-bottom: 0.15in;
+  }
+
+  .covh-banner-stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .covh-banner-strip {
+    margin: 0 0 8pt;
+  }
+
+  .covh-banner-strip-image {
+    width: 100%;
+    max-height: 0.8in;
+    object-fit: contain;
   }
 
   .covh-banner-title {
@@ -2433,6 +2548,21 @@ body.large-text .calendar-day-card {
     font-size: 6.9pt;
   }
 
+  .covh-inline-bag-icon {
+    width: 8pt;
+    height: 8pt;
+    min-width: 8pt;
+    flex: 0 0 8pt;
+  }
+
+  .covh-callout-bag-icon {
+    width: 9pt;
+    height: 9pt;
+    min-width: 9pt;
+    flex: 0 0 9pt;
+    margin: 0 2pt;
+  }
+
   .covh-script-heading {
     font-size: 16pt;
   }
@@ -2447,6 +2577,22 @@ body.large-text .calendar-day-card {
     height: 40pt;
   }
 
+  .covh-art-block {
+    min-height: 1.95in;
+  }
+
+  .covh-art-image {
+    right: 0;
+    bottom: 0;
+    width: 80%;
+  }
+
+  .covh-footer-lines {
+    left: 8pt;
+    bottom: 18pt;
+    max-width: 46%;
+  }
+  
   @page {
     size: letter portrait;
     margin: 0;

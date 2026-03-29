@@ -803,18 +803,19 @@ function renderCovhPageOne(flyer) {
   return `
     <article class="flyer-page covh-pamphlet-page covh-page-one" data-page="1">
       <div class="flyer-page-inner covh-page-inner">
-        <header class="covh-banner covh-banner-with-art">
-          <div class="covh-banner-copy">
-            <div class="covh-banner-date">${escapeHtml(flyer.document?.subtitle || '')}</div>
-            <div class="covh-banner-title">Christmas on Vinegar Hill</div>
-            <div class="covh-banner-note">${escapeHtml(flyer.callouts?.treeSign || 'Look for the tree sign for participating locations')}</div>
-          </div>
-          ${flyer.assets?.headerGraphic ? `
-            <div class="covh-banner-art">
-              <img src="${escapeHtml(flyer.assets.headerGraphic)}" alt="" class="covh-banner-art-image" loading="lazy" />
-            </div>
-          ` : ''}
-        </header>
+		<header class="covh-banner covh-banner-stacked">
+		  ${flyer.assets?.headerGraphic ? `
+			<div class="covh-banner-strip">
+			  <img src="${escapeHtml(flyer.assets.headerGraphic)}" alt="" class="covh-banner-strip-image" loading="lazy" />
+			</div>
+		  ` : ''}
+
+		  <div class="covh-banner-copy covh-banner-copy-centered">
+			<div class="covh-banner-date">${escapeHtml(flyer.document?.subtitle || '')}</div>
+			<div class="covh-banner-title">Christmas on Vinegar Hill</div>
+			<div class="covh-banner-note">${escapeHtml(flyer.callouts?.treeSign || 'Look for the tree sign for participating locations')}</div>
+		  </div>
+		</header>
 
         <div class="covh-page-one-grid">
           <section class="covh-column covh-main-list">
