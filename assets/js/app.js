@@ -982,6 +982,27 @@ function renderFlyerSection(section, showTitle = true) {
   `;
 }
 
+function openFlyerFromHash() {
+  const hash = window.location.hash?.replace('#', '');
+  if (!hash) return;
+
+  if (hash === 'flyer' || hash === 'flyer-panel') {
+    const flyerTab = document.querySelector('[data-tab="flyer"]');
+    flyerTab?.click();
+
+    setTimeout(() => {
+      const flyerTarget =
+        document.getElementById(hash) ||
+        document.getElementById('flyer-panel');
+
+      flyerTarget?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }, 150);
+  }
+}
+
 function renderRegionalBlock(block, flyer) {
   const mapSrc = flyer.assets?.maps?.[block.mapKey];
   return `
@@ -1104,7 +1125,7 @@ function buildFlyerPrintDocument(flyer) {
 }
 
 async function shareFlyerLink() {
-	const shareUrl = `${window.location.origin}${window.location.pathname}#flyer-panel`;
+	const shareUrl = `${window.location.origin}${window.location.pathname}#flyer`;
 
   const shareData = {
     title: `${state.eventData?.eventName || 'Event'} Flyer`,
@@ -1125,7 +1146,7 @@ function openFlyerPrintView(mode = 'print') {
   const flyer = state.eventData?.flyer;
   if (!flyer) return;
 
-  const printWindow = window.open('', '_blank');
+  const printWindow = window.open('', '_blank', 'noopener,noreferrer');
   if (!printWindow) {
     alert('Allow pop-ups for this site to print or save the flyer.');
     return;
@@ -1137,34 +1158,34 @@ function openFlyerPrintView(mode = 'print') {
   printWindow.document.write(html);
   printWindow.document.close();
 
-  const runPrint = () => {
-    printWindow.focus();
-
-    setTimeout(() => {
-      try {
-        printWindow.print();
-      } catch (error) {
-        console.error('Print failed:', error);
-        alert('Print dialog could not be opened.');
-      }
-    }, mode === 'pdf' ? 800 : 500);
+  const triggerPrint = () => {
+    try {
+      printWindow.focus();
+      printWindow.print();
+    } catch (error) {
+      console.error('Print failed:', error);
+      alert('Print dialog could not be opened.');
+    }
   };
 
-  setTimeout(runPrint, 700);
+  printWindow.addEventListener('load', () => {
+    setTimeout(triggerPrint, mode === 'pdf' ? 700 : 400);
+  });
+
+  setTimeout(triggerPrint, mode === 'pdf' ? 1200 : 900);
 }
 
 function setupFlyerActions() {
   if (!el.flyerPanel) return;
+
   el.flyerPanel.querySelectorAll('[data-flyer-action]').forEach(button => {
-    button.addEventListener('click', async () => {
+    button.addEventListener('click', (event) => {
       const action = button.dataset.flyerAction;
 
       if (action === 'share') {
-        try {
-          await shareFlyerLink();
-        } catch (error) {
+        shareFlyerLink().catch(error => {
           console.error(error);
-        }
+        });
         return;
       }
 
@@ -1325,6 +1346,7 @@ async function init() {
     renderLocations(data);
     renderFlyer(data);
     setupTabs();
+	openFlyerFromHash();
 
     el.closeModal?.addEventListener('click', closeModal);
     el.modal?.addEventListener('click', (event) => {
