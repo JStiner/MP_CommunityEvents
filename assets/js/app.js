@@ -1201,6 +1201,121 @@ function setupFlyerActions() {
   });
 }
 
+function buildFlyerFromDb(data) {
+  if (!data) return null;
+
+  // fallback if DB not loaded yet
+  if (!data.flyerSections || !data.flyerEntries) {
+    return data.flyer || null;
+  }
+
+  const sections = {};
+  const sectionMap = {};
+
+  // map sections
+  (data.flyerSections || []).forEach(section => {
+    const key = section.section_key || section.section_title.toLowerCase().replace(/\s+/g, '-');
+    sectionMap[section.id] = key;
+
+    sections[key] = {
+      key,
+      title: section.section_title,
+      entries: []
+    };
+  });
+
+  // map entries into sections
+  (data.flyerEntries || []).forEach(entry => {
+    const sectionKey = sectionMap[entry.section_id];
+    if (!sectionKey || !sections[sectionKey]) return;
+
+    sections[sectionKey].entries.push({
+      number: entry.entry_code,
+      name: entry.name,
+      address: entry.address,
+      hours: entry.hours,
+      description: entry.description,
+      badges: entry.badges || [],
+      bagLocation: entry.bag_location || false
+    });
+  });
+
+  // sort entries
+  Object.values(sections).forEach(section => {
+    section.entries.sort((a, b) => {
+      const aNum = parseInt(a.number, 10) || 999;
+      const bNum = parseInt(b.number, 10) || 999;
+      return aNum - bNum;
+    });
+  });
+
+  // build legend
+  const legend = (data.flyerLegend || []).map(l => ({
+    label: l.label,
+    meaning: l.meaning
+  }));
+
+  // footer
+  const footer = (data.flyerFooterNotes || [])
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .map(f => f.note);
+
+  // sponsors split (first 6 = benefactors)
+  const allSponsors = (data.flyerSponsors || []).map(s => s.sponsor_name);
+
+  const benefactors = allSponsors.slice(0, 6);
+  const sponsors = allSponsors.slice(6);
+
+  return {
+    document: data.flyer?.document || {
+      title: data.eventName,
+      subtitle: data.dateLabel,
+      eyebrow: 'Printable flyer'
+    },
+
+    assets: data.flyer?.assets || {},
+
+    legend,
+
+    sections: {
+      'mt-pulaski-a': { ...sections['mt-pulaski'], entries: sections['mt-pulaski']?.entries.slice(0, 8) || [] },
+      'mt-pulaski-b': { ...sections['mt-pulaski'], entries: sections['mt-pulaski']?.entries.slice(8, 16) || [] },
+      'mt-pulaski-c': { ...sections['mt-pulaski'], entries: sections['mt-pulaski']?.entries.slice(16) || [] },
+      regional: {
+        title: 'Regional Stops',
+        blocks: [
+          {
+            title: 'Chestnut',
+            mapKey: 'chestnut',
+            entries: sections['chestnut']?.entries || []
+          },
+          {
+            title: 'Elkhart',
+            mapKey: 'elkhart',
+            entries: sections['elkhart']?.entries || []
+          },
+          {
+            title: 'Latham',
+            mapKey: 'latham',
+            entries: sections['latham']?.entries || []
+          }
+        ]
+      }
+    },
+
+    pageFlow: [
+      { leftSection: 'mt-pulaski-a', rightSection: 'mt-pulaski-b' },
+      { leftSection: 'mt-pulaski-c', rightSection: 'regional' }
+    ],
+
+    callouts: {
+      footer,
+      sponsors,
+      benefactors
+    }
+  };
+}
+
 function renderFlyer(data) {
   if (!el.flyerPanel) return;
   if (!data.flyer) {
@@ -1208,7 +1323,7 @@ function renderFlyer(data) {
     return;
   }
 
-  const flyer = data.flyer;
+  const flyer = buildFlyerFromDb(data);
   const flyerMarkup = isCovhFlyer(flyer, data)
     ? renderCovhPamphlet(flyer)
     : `
