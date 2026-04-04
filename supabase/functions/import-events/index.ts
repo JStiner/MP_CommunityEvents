@@ -44,7 +44,6 @@ function getSupabaseClient() {
 }
 
 Deno.serve(async (req) => {
-  // ✅ HANDLE PREFLIGHT FIRST
   if (req.method === 'OPTIONS') {
     return new Response('ok', {
       headers: corsHeaders,
@@ -52,12 +51,10 @@ Deno.serve(async (req) => {
     });
   }
 
-  // ✅ ONLY ALLOW POST
   if (req.method !== 'POST') {
     return json({ ok: false, error: 'Method not allowed. Use POST.' }, 405);
   }
 
-  // ✅ CREATE CLIENT HERE (AFTER PREFLIGHT + METHOD CHECK)
   const supabase = getSupabaseClient();
 
   try {
@@ -73,11 +70,30 @@ Deno.serve(async (req) => {
       .eq('is_enabled', true)
       .order('source_key', { ascending: true });
 
-    // ...rest of your code
+    if (requestedSourceKeys && requestedSourceKeys.length > 0) {
+      query = query.in('source_key', requestedSourceKeys);
+    }
+
+    const { data: sources, error: sourceError } = await query;
+    if (sourceError) throw sourceError;
+
+    const results: Array<Record<string, unknown>> = [];
+
+    for (const source of (sources || []) as EventSource[]) {
+      const runResult = await runSingleSource(supabase, source);
+      results.push(runResult);
+    }
+
+    return json({ ok: true, results });
+  } catch (error) {
+    console.error('import-events fatal error', error);
+    return json({ ok: false, error: (error as Error).message }, 500);
+  }
+});
 
 async function runSingleSource(
   supabase: ReturnType<typeof getSupabaseClient>,
-  source: EventSource
+  source: EventSource,
 ): Promise<Record<string, unknown>> {
   const { data: runId, error: beginError } = await supabase.rpc('begin_event_import', {
     p_source_key: source.source_key,
@@ -170,19 +186,28 @@ async function fetchText(url: string): Promise<string> {
 function parseCityCalendarHtml(html: string, source: EventSource, run_id: number): NormalizedRow[] {
   const rows: NormalizedRow[] = [];
 
-  // City of Mt. Pulaski: expected plugin markup often wraps entries in an article/list item with date + title + location.
-  // TODO: confirm exact production selector if the city site template changes.
   const blocks = html.match(/<(article|li|div)[^>]*class="[^"]*(tribe-events|eventlist|event-item)[^"]*"[^>]*>[\s\S]*?<\/(article|li|div)>/gi) || [];
 
   for (const block of blocks) {
-    const title = cleanup(stripTags(firstMatch(block, /<(h2|h3|a)[^>]*class="[^"]*(title|summary|event-title)[^"]*"[^>]*>([\s\S]*?)<\/(h2|h3|a)>/i, 3) || firstMatch(block, /<(h2|h3)[^>]*>([\s\S]*?)<\/(h2|h3)>/i, 2) || ''));
+    const title = cleanup(stripTags(
+      firstMatch(block, /<(h2|h3|a)[^>]*class="[^"]*(title|summary|event-title)[^"]*"[^>]*>([\s\S]*?)<\/(h2|h3|a)>/i, 3) ||
+      firstMatch(block, /<(h2|h3)[^>]*>([\s\S]*?)<\/(h2|h3)>/i, 2) ||
+      '',
+    ));
     if (!title) continue;
 
     const href = firstMatch(block, /<a[^>]*href="([^"]+)"[^>]*>/i, 1);
-    const description = cleanup(stripTags(firstMatch(block, /<(p|div)[^>]*class="[^"]*(description|summary)[^"]*"[^>]*>([\s\S]*?)<\/(p|div)>/i, 3) || '')) || null;
-    const location = cleanup(stripTags(firstMatch(block, /<(span|div)[^>]*class="[^"]*(venue|location)[^"]*"[^>]*>([\s\S]*?)<\/(span|div)>/i, 3) || '')) || null;
+    const description = cleanup(stripTags(
+      firstMatch(block, /<(p|div)[^>]*class="[^"]*(description|summary)[^"]*"[^>]*>([\s\S]*?)<\/(p|div)>/i, 3) || '',
+    )) || null;
+    const location = cleanup(stripTags(
+      firstMatch(block, /<(span|div)[^>]*class="[^"]*(venue|location)[^"]*"[^>]*>([\s\S]*?)<\/(span|div)>/i, 3) || '',
+    )) || null;
 
-    const isoStart = parseDateToIso(firstMatch(block, /datetime="([^"]+)"/i, 1) || firstMatch(block, /(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?([+-]\d{2}:?\d{2}|Z)?)/i, 1));
+    const isoStart = parseDateToIso(
+      firstMatch(block, /datetime="([^"]+)"/i, 1) ||
+      firstMatch(block, /(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?([+-]\d{2}:?\d{2}|Z)?)/i, 1),
+    );
     const all_day = !isoStart;
 
     const raw_payload: Record<string, unknown> = {
@@ -312,21 +337,21 @@ function parseIcsDate(value: string): string | null {
 
   const zulu = raw.match(/^(\d{8})T(\d{6})Z$/);
   if (zulu) {
-    const [_, day, time] = zulu;
+    const [, day, time] = zulu;
     const iso = `${day.slice(0, 4)}-${day.slice(4, 6)}-${day.slice(6, 8)}T${time.slice(0, 2)}:${time.slice(2, 4)}:${time.slice(4, 6)}Z`;
     return parseDateToIso(iso);
   }
 
   const localWithTime = raw.match(/^(\d{8})T(\d{6})$/);
   if (localWithTime) {
-    const [_, day, time] = localWithTime;
+    const [, day, time] = localWithTime;
     const iso = `${day.slice(0, 4)}-${day.slice(4, 6)}-${day.slice(6, 8)}T${time.slice(0, 2)}:${time.slice(2, 4)}:${time.slice(4, 6)}-05:00`;
     return parseDateToIso(iso);
   }
 
   const dateOnly = raw.match(/^(\d{8})$/);
   if (dateOnly) {
-    const [_, day] = dateOnly;
+    const [, day] = dateOnly;
     return parseDateToIso(`${day.slice(0, 4)}-${day.slice(4, 6)}-${day.slice(6, 8)}T00:00:00-06:00`);
   }
 
@@ -347,7 +372,7 @@ function json(payload: unknown, status = 200): Response {
     status,
     headers: {
       ...corsHeaders,
-      'content-type': 'application/json; charset=utf-8'
+      'content-type': 'application/json; charset=utf-8',
     },
   });
 }
