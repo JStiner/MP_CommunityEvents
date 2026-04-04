@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | Community Events</title>
+  <link rel="stylesheet" href="./assets/css/admin.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="admin-header-v2">
+      <div>
+        <h1>Community Events Admin</h1>
+        <p class="subtle-text">Manage your groups and review audit activity.</p>
+      </div>
+    </header>
+
+    <nav id="adminTabs" class="admin-tabs" aria-label="Admin sections"></nav>
+
+    <section id="adminTabPanel" class="admin-panel"></section>
+    <section id="auditTabPanel" class="admin-panel hidden"></section>
+    <section id="groupTabPanel" class="admin-panel hidden"></section>
+  </main>
+  <div id="eventEditorModal" class="admin-modal hidden"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./assets/js/supabase-client.js"></script>
+  <script src="./admin.js"></script>
+</body>
+</html>

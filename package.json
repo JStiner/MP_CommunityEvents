@@ -1,0 +1,27 @@
+{
+  "name": "mpevents-staging",
+  "version": "1.0.0",
+  "description": "Community Events staging site and admin console.",
+  "main": "assets/js/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check:syntax": "node --check assets/js/app.js && node --check assets/js/home.js && node --check assets/js/admin-auth.js && node --check admin.js",
+    "check:conflicts": "bash -lc '! rg -n \"^(<<<<<<<|=======|>>>>>>>)\" --glob \"*.html\" --glob \"assets/js/*.js\" --glob \"assets/css/*.css\" .'",
+    "check:premerge": "npm run check:syntax && npm run check:conflicts"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.101.0"
+  }
+}

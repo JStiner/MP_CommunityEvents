@@ -1,11 +1,12 @@
 const eventSources = [
-  { file: 'data/fallfest/fall-fest-2026.json', page: 'fall-fest.html', slug: 'fall-fest', bucket: 'Fall Fest' },
-  { file: 'data/2ndfriday/second-fridays-2026.json', page: 'second-fridays.html', slug: 'second-fridays', bucket: '2nd Fridays' },
-  { file: 'data/covh/event.json', page: 'christmas-on-vinegar-hill.html', slug: 'christmas-on-vinegar-hill', bucket: 'COVH' },
-  { file: 'data/community-events/community-events-2026.json', page: 'community-events.html', slug: 'community-events', bucket: 'Community' },
-  { file: 'data/high-school-events/high-school-events-2026.json', page: 'high-school-events.html', slug: 'high-school-events', bucket: 'School' },
-  { file: 'data/town-services/town-services-2026.json', page: 'town-services.html', slug: 'town-services', bucket: 'Town Services' }
+  { page: 'fall-fest.html', slug: 'fall-fest', bucket: 'Fall Fest' },
+  { page: 'second-fridays.html', slug: 'second-fridays', bucket: '2nd Fridays' },
+  { page: 'christmas-on-vinegar-hill.html', slug: 'christmas-on-vinegar-hill', bucket: 'COVH' },
+  { page: 'community-events.html', slug: 'community-events', bucket: 'Community' },
+  { page: 'high-school-events.html', slug: 'high-school-events', bucket: 'School' },
+  { page: 'town-services.html', slug: 'town-services', bucket: 'Town Services' }
 ];
+const supabaseClient = window.supabaseClient;
 
 const homeState = {
   view: 'month',
@@ -145,27 +146,51 @@ function showHomeLoadError(message) {
   }
 }
 
+function buildHomeData(pageRow, scheduleRows, locationRows, dayRows) {
+  const raw = pageRow.raw || {};
+  return {
+    ...raw,
+    eventName: pageRow.event_name,
+    eventType: pageRow.event_type,
+    summary: pageRow.summary,
+    dateLabel: pageRow.date_label,
+    areaLabel: pageRow.area_label,
+    days: (dayRows || []).map(day => ({ ...(day.raw || {}), id: day.external_id, label: day.label, date: day.event_date })),
+    locations: (locationRows || []).map(loc => ({ ...(loc.raw || {}), id: loc.external_id, name: loc.name })),
+    schedule: (scheduleRows || []).map(item => ({
+      ...(item.raw || {}),
+      id: item.external_id,
+      title: item.title,
+      category: item.category,
+      startTime: item.start_time,
+      endTime: item.end_time,
+      date: item.event_date,
+      dayId: item.day_external_id,
+      locationId: item.location_external_id,
+      description: item.description,
+      vendorIds: Array.isArray(item.vendor_ids) ? item.vendor_ids : []
+    }))
+  };
+}
+
 async function loadSourceData(source) {
-  const response = await fetch(source.file);
-  if (!response.ok) {
-    throw new Error(`Failed to load ${source.file} (${response.status})`);
+  if (!supabaseClient) {
+    throw new Error('Supabase client is not available.');
   }
 
-  const data = await response.json();
-  if (!data?._split) return data;
+  const [pageResult, scheduleResult, locationResult, dayResult] = await Promise.all([
+    supabaseClient.from('event_pages').select('*').eq('slug', source.slug).single(),
+    supabaseClient.from('event_schedule').select('*').eq('page_slug', source.slug).or('is_active.is.null,is_active.eq.true').order('event_date', { ascending: true }).order('sort_order', { ascending: true }),
+    supabaseClient.from('event_locations').select('*').eq('page_slug', source.slug),
+    supabaseClient.from('event_days').select('*').eq('page_slug', source.slug).order('sort_order', { ascending: true })
+  ]);
 
-  const basePath = source.file.includes('/') ? source.file.slice(0, source.file.lastIndexOf('/') + 1) : '';
-  const entries = await Promise.all(
-    Object.entries(data._split).map(async ([key, relativePath]) => {
-      const partResponse = await fetch(`${basePath}${relativePath}`);
-      if (!partResponse.ok) {
-        throw new Error(`Failed to load ${basePath}${relativePath} (${partResponse.status})`);
-      }
-      return [key, await partResponse.json()];
-    })
-  );
+  const failed = [pageResult, scheduleResult, locationResult, dayResult].find(result => result.error);
+  if (failed) {
+    throw failed.error;
+  }
 
-  return Object.assign({}, data, Object.fromEntries(entries));
+  return buildHomeData(pageResult.data, scheduleResult.data || [], locationResult.data || [], dayResult.data || []);
 }
 
 function createExpandedDayRow(date, events) {
@@ -209,7 +234,7 @@ async function loadData() {
     );
   } catch (error) {
     console.error(error);
-    showHomeLoadError('Calendar data failed to load. If you opened the site directly from a ZIP or local folder, serve it from a local web server or GitHub Pages.');
+    showHomeLoadError('Calendar data failed to load from Supabase. Check the browser console for the first query error.');
     return;
   }
 
@@ -233,7 +258,6 @@ async function loadData() {
         eventName: data.eventName,
         eventType: data.eventType,
         eventPage: source.page,
-        sourceFile: source.file,
         pageSlug: source.slug,
         description: item.description,
         bucket: source.bucket
