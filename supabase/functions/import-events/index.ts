@@ -32,17 +32,19 @@ type NormalizedRow = {
   content_hash: string;
 };
 
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+function getSupabaseClient() {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+  const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 
-if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error('SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.');
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error('SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.');
+  }
+
+  return createClient(supabaseUrl, serviceRoleKey);
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-
 Deno.serve(async (req) => {
-  // ✅ HANDLE PREFLIGHT
+  // ✅ HANDLE PREFLIGHT FIRST
   if (req.method === 'OPTIONS') {
     return new Response('ok', {
       headers: corsHeaders,
@@ -50,8 +52,17 @@ Deno.serve(async (req) => {
     });
   }
 
+  // ✅ ONLY ALLOW POST
+  if (req.method !== 'POST') {
+    return json({ ok: false, error: 'Method not allowed. Use POST.' }, 405);
+  }
+
+  // ✅ CREATE CLIENT HERE (AFTER PREFLIGHT + METHOD CHECK)
+  const supabase = getSupabaseClient();
+
   try {
     const body = await req.json().catch(() => ({}));
+
     const requestedSourceKeys = Array.isArray(body?.sourceKeys)
       ? body.sourceKeys.map((value: unknown) => String(value || '').trim()).filter(Boolean)
       : null;
@@ -62,28 +73,12 @@ Deno.serve(async (req) => {
       .eq('is_enabled', true)
       .order('source_key', { ascending: true });
 
-    if (requestedSourceKeys && requestedSourceKeys.length > 0) {
-      query = query.in('source_key', requestedSourceKeys);
-    }
+    // ...rest of your code
 
-    const { data: sources, error: sourceError } = await query;
-    if (sourceError) throw sourceError;
-
-    const results: Array<Record<string, unknown>> = [];
-
-    for (const source of (sources || []) as EventSource[]) {
-      const runResult = await runSingleSource(source);
-      results.push(runResult);
-    }
-
-    return json({ ok: true, results });
-  } catch (error) {
-    console.error('import-events fatal error', error);
-    return json({ ok: false, error: (error as Error).message }, 500);
-  }
-});
-
-async function runSingleSource(source: EventSource): Promise<Record<string, unknown>> {
+async function runSingleSource(
+  supabase: ReturnType<typeof getSupabaseClient>,
+  source: EventSource
+): Promise<Record<string, unknown>> {
   const { data: runId, error: beginError } = await supabase.rpc('begin_event_import', {
     p_source_key: source.source_key,
     p_created_by: 'edge:import-events',
