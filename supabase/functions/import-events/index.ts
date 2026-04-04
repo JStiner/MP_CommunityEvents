@@ -1,5 +1,11 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.1';
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+};
+
 type EventSource = {
   source_key: string;
   page_slug: string;
@@ -36,6 +42,14 @@ if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 Deno.serve(async (req) => {
+  // ✅ HANDLE PREFLIGHT
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', {
+      headers: corsHeaders,
+      status: 200,
+    });
+  }
+
   try {
     const body = await req.json().catch(() => ({}));
     const requestedSourceKeys = Array.isArray(body?.sourceKeys)
@@ -336,6 +350,9 @@ function stableHash(input: string): string {
 function json(payload: unknown, status = 200): Response {
   return new Response(JSON.stringify(payload), {
     status,
-    headers: { 'content-type': 'application/json; charset=utf-8' },
+    headers: {
+      ...corsHeaders,
+      'content-type': 'application/json; charset=utf-8'
+    },
   });
 }
